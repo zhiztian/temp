@@ -114,9 +114,11 @@ $cmd='Get-Process iexplore -ErrorAction SilentlyContinue | Stop-Process -Force -
 $enc=[Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($cmd))
 schtasks /Delete /TN $taskName /F 2>$null | Out-Null
 $action="powershell.exe -NoProfile -WindowStyle Hidden -EncodedCommand $enc"
-schtasks /Create /TN $taskName /TR $action /SC ONLOGON /RL HIGHEST /F 2>&1 | Out-Null
-$taskOk = ($LASTEXITCODE -eq 0)
-W "  task '$taskName': $(OK $taskOk)"
+$createOut = schtasks /Create /TN $taskName /TR $action /SC ONLOGON /RL HIGHEST /F 2>&1
+$createRc = $LASTEXITCODE
+$taskOk = ($createRc -eq 0)
+W "  task '$taskName': $(OK $taskOk) (rc=$createRc)"
+if(-not $taskOk){ W ("    schtasks output: {0}" -f ($createOut | Out-String).Trim()) }
 Flush
 
 # ============ STEP 4: clear current residue ============

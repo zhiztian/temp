@@ -1,0 +1,567 @@
+﻿System scan for IE-mode breakers  2026-06-09 20:47:41
+Machine: DESKTOP-2BJ6P4J
+================================================
+
+[1] Processes (NON-Microsoft / suspicious flagged)
+  jusched                Oracle Corporation
+       C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe  (non-MS)
+  vmware-usbarbitrator64 VMware, Inc.
+       C:\Program Files (x86)\Common Files\VMware\USB\vmware-usbarbitrator64.exe  (non-MS)
+  fpprotect              茉柏枘（上海）软件科技有限公司
+       C:\Program Files (x86)\fastpdf\fpprotect.exe  <<< SUSPICIOUS
+  horizon_client_service VMware, Inc.
+       C:\Program Files (x86)\VMware\VMware Horizon View Client\ClientService\horizon_client_service.exe  (non-MS)
+  WDSPDBUSBKeyTool       Watchdata
+       C:\Program Files (x86)\浦发银行\握奇\WDSPDBUSBKeyTool.exe  (non-MS)
+  certd_I3000_SPDB       EnterSafe
+       C:\Program Files (x86)\浦发银行U-KEY管理工具\飞天诚信\certd_I3000_SPDB.exe  (non-MS)
+  ftnlsv                 
+       C:\Program Files\Common Files\VMware\DeviceRedirectionCommon\ftnlsv.exe  (non-MS)
+  ftscanmgrhv            
+       C:\Program Files\Common Files\VMware\ScannerRedirection\ftscanmgrhv.exe  (non-MS)
+  vmwsprrdpwks           VMware
+       C:\Program Files\Common Files\VMware\SerialPortRedirection\Client\vmwsprrdpwks.exe  (non-MS)
+  CorpLink               Beijing Volcano Engine Technology Co., Ltd.
+       C:\Program Files\CorpLink\current\Client\CorpLink.exe  (non-MS)
+  corplink-service       
+       C:\Program Files\CorpLink\current\corplink-service.exe  (non-MS)
+  corplink-helper        北京火山引擎科技有限公司
+       C:\Program Files\CorpLink\current\module\uc\x64\corplink-helper.exe  (non-MS)
+  corplink-uc            北京火山引擎科技有限公司
+       C:\Program Files\CorpLink\current\module\uc\x64\corplink-uc.exe  (non-MS)
+  parfait_crash_handler  
+       C:\Program Files\CorpLink\current\module\uc\x64\parfait_crash_handler.exe  (non-MS)
+  corplink-helper        北京火山引擎科技有限公司
+       C:\Program Files\CorpLink\current\module\uc\x86\corplink-helper.exe  (non-MS)
+  corplink-uc            北京火山引擎科技有限公司
+       C:\Program Files\CorpLink\current\module\uc\x86\corplink-uc.exe  (non-MS)
+  git-bash               The Git Development Community
+       C:\Program Files\Git\git-bash.exe  (non-MS)
+  bash                   
+       C:\Program Files\Git\usr\bin\bash.exe  (non-MS)
+  mintty                 Thomas Wolff, Andy Koppe
+       C:\Program Files\Git\usr\bin\mintty.exe  <<< UNSIGNED/NotSigned
+  HPPrintScanDoctorService HP Inc.
+       C:\Program Files\HPPrintScanDoctor\HPPrintScanDoctorService.exe  <<< SUSPICIOUS
+  knightedge             
+       C:\Program Files\KnightMDM\Agent\knightedge.exe  <<< SUSPICIOUS
+  MSOfficePLUSService    MSOfficePLUSService
+       C:\Program Files\Microsoft OfficePLUS\3.11.0.36530\addin\MSOfficePLUSService.exe  (non-MS)
+  OneDrive               Microsoft Corporation
+       C:\Program Files\Microsoft OneDrive\OneDrive.exe  <<< SUSPICIOUS
+  ruby                   http://www.ruby-lang.org/
+       C:\Program Files\Puppet Labs\Puppet\puppet\bin\ruby.exe  <<< UNSIGNED/NotSigned
+  crashpad_handler       
+       C:\Program Files\Tencent\Weixin\4.1.10.31\crashpad_handler.exe  <<< SUSPICIOUS
+  Weixin                 Tencent
+       C:\Program Files\Tencent\Weixin\Weixin.exe  <<< SUSPICIOUS
+  wetype_renderer        Tencent
+       C:\Program Files\Tencent\WeType\2.0.0.27\wetype_renderer.exe  <<< SUSPICIOUS
+  wetype_server          Tencent
+       C:\Program Files\Tencent\WeType\2.0.0.27\wetype_server.exe  <<< SUSPICIOUS
+  wetype_service         Tencent
+       C:\Program Files\Tencent\WeType\2.0.0.27\wetype_service.exe  <<< SUSPICIOUS
+  wetype_update          Tencent
+       C:\Program Files\Tencent\WeType\2.0.0.27\wetype_update.exe  <<< SUSPICIOUS
+  SenseNdr               Microsoft
+       C:\Program Files\Windows Defender Advanced Threat Protection\SenseNdr.exe  <<< SUSPICIOUS
+  SenseTVM               
+       C:\Program Files\Windows Defender Advanced Threat Protection\SenseTVM.exe  <<< SUSPICIOUS
+  cowork-svc             
+       C:\Program Files\WindowsApps\Claude_1.11187.4.0_x64__pzs8sxrjxfjjc\app\resources\cowork-svc.exe  (non-MS)
+  MSPCManagerService     MSPCManagerService
+       C:\Program Files\WindowsApps\Microsoft.MicrosoftPCManager_3.21.6.0_x64__8wekyb3d8bbwe\PCManager\MSPCManagerService.exe  (non-MS)
+  StoreDesktopExtension  
+       C:\Program Files\WindowsApps\Microsoft.WindowsStore_22604.1401.8.0_x64__8wekyb3d8bbwe\StoreDesktopExtension.exe  <<< UNSIGNED/NotSigned
+  Feishu                 Beijing Feishu Technology Co., Ltd.
+       C:\Users\admin\AppData\Local\Feishu\app\Feishu.exe  (non-MS)
+  YunDetectService       Baidu.com, Inc.
+       C:\Users\admin\AppData\Roaming\baidu\BaiduNetdisk\YunDetectService.exe  <<< SUSPICIOUS
+  WeChatAppEx            Tencent LLC
+       C:\Users\admin\AppData\Roaming\Tencent\xwechat\xplugin\plugins\RadiumWMPF\19921\extracted\runtime\WeChatAppEx.exe  <<< SUSPICIOUS
+  FwSwitchService        Fibocom Wireless Inc.
+       C:\WINDOWS\Firmware\FwSwitchbin\FwSwitchService.exe  (non-MS)
+  ctfmon                 
+         <<< UNSIGNED/
+  igfxCUIService         Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\cui_dch.inf_amd64_c36cd6406677db45\igfxCUIService.exe  <<< SUSPICIOUS
+  igfxEM                 Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\cui_dch.inf_amd64_c36cd6406677db45\igfxEM.exe  <<< SUSPICIOUS
+  jhi_service            Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\dal.inf_amd64_8a3f88e34f6b8385\jhi_service.exe  <<< SUSPICIOUS
+  DAX3API                Dolby Laboratories
+       C:\WINDOWS\System32\DriverStore\FileRepository\DAX3_S~2.INF\DAX3API.exe  <<< SUSPICIOUS
+  DAX3API                Dolby Laboratories
+       C:\WINDOWS\System32\DriverStore\FileRepository\dax3_swc_aposvc.inf_amd64_c28b41707aefc6b9\DAX3API.exe  <<< SUSPICIOUS
+  dptf_helper            Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\dptf_cpu.inf_amd64_1da48d5885266bb7\dptf_helper.exe  <<< SUSPICIOUS
+  esif_uf                Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\dptf_cpu.inf_amd64_1da48d5885266bb7\esif_uf.exe  <<< SUSPICIOUS
+  tphkload               Lenovo
+       C:\WINDOWS\System32\DriverStore\FileRepository\fn.inf_amd64_8e91a39d67d49dc4\driver\TPHKLOAD.exe  <<< SUSPICIOUS
+  shtctky                Lenovo
+       C:\WINDOWS\System32\DriverStore\FileRepository\FN2033~1.INF\driver\SHTCTKY.EXE  <<< SUSPICIOUS
+  tposd                  Lenovo
+       C:\WINDOWS\System32\DriverStore\FileRepository\FN2033~1.INF\driver\TPOSD.EXE  <<< SUSPICIOUS
+  ibmpmsvc               Lenovo
+       C:\WINDOWS\System32\DriverStore\FileRepository\ibmpmdrv.inf_amd64_317aadafb86018c3\x64\ibmpmsvc.exe  <<< SUSPICIOUS
+  OneApp.IGCC.WinService Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\igcc_dch.inf_amd64_c18e9c8eed547b01\OneApp.IGCC.WinService.exe  <<< SUSPICIOUS
+  IntelCpHDCPSvc         Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_95fe435b2caddb3e\IntelCpHDCPSvc.exe  <<< SUSPICIOUS
+  IntelCpHeciSvc         
+       C:\WINDOWS\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_95fe435b2caddb3e\IntelCpHeciSvc.exe  <<< SUSPICIOUS
+  IntelAudioService      Intel
+       C:\WINDOWS\System32\DriverStore\FileRepository\intcoed.inf_amd64_581d7e91d349facc\AS\IAS\IntelAudioService.exe  <<< SUSPICIOUS
+  LITSSvc                Lenovo.
+       C:\WINDOWS\System32\DriverStore\FileRepository\litsdrv.inf_amd64_0fefde8b58482d0b\x64\LITSSvc.exe  <<< SUSPICIOUS
+  WMIRegistrationService Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\mewmiprov.inf_amd64_0ce29d36fc8607e6\WMIRegistrationService.exe  <<< SUSPICIOUS
+  RtkAudUService64       Realtek Semiconductor
+       C:\WINDOWS\System32\DriverStore\FileRepository\realtekservice.inf_amd64_55047240f73a1fa6\RtkAudUService64.exe  <<< SUSPICIOUS
+  aesm_service           Intel Corporation
+       C:\WINDOWS\System32\DriverStore\FileRepository\sgx_psw.inf_amd64_ece153ca769ec179\aesm_service.exe  <<< SUSPICIOUS
+  SmartStandby           Lenovo
+       C:\Windows\System32\DriverStore\FileRepository\smartstandbycomponent.inf_amd64_3d585c065d8f0236\SmartStandby.exe  <<< SUSPICIOUS
+  SynRpcServer           Synaptics Incorporated.
+       C:\WINDOWS\System32\DriverStore\FileRepository\synawudfbiousbuwp.inf_amd64_203e1aa750b8f773\SynRpcServer.exe  <<< SUSPICIOUS
+  EPDCtrl                ELAN Microelectronics Corp.
+       C:\WINDOWS\system32\EPDCtrl.exe  (non-MS)
+  EPDService             ELAN Microelectronics Corp.
+       C:\WINDOWS\System32\EPDService.exe  (non-MS)
+  FMService64            Fortemedia
+       C:\WINDOWS\System32\FMService64.exe  (non-MS)
+  ModemAuthenticator     Intel
+       C:\WINDOWS\System32\ModemAuthenticator.exe  (non-MS)
+  RuntimeBroker          
+         <<< UNSIGNED/
+  SecurityHealthSystray  Microsoft Corporation
+       C:\Windows\System32\SecurityHealthSystray.exe  <<< SUSPICIOUS
+  DBSer_SPDB             Tendyron Corporation
+       C:\WINDOWS\SysWOW64\DBSer_SPDB.exe  (non-MS)
+  DBSvr_SPDB             Tendyron Corporation
+       C:\Windows\SysWOW64\DBSvr_SPDB.exe  (non-MS)
+  PowerMgr               Lenovo
+       C:\WINDOWS\SysWOW64\Lenovo\PowerMgr\PowerMgr.exe  <<< SUSPICIOUS
+  netCertServerSPDB      SPDB
+       C:\WINDOWS\SysWOW64\SPDBcertNew\netCertServerSPDB.exe  (non-MS)
+  netCertServerSPDBService 上海浦东发展银行
+       C:\WINDOWS\SysWOW64\SPDBcertNew\netCertServerSPDBService.exe  (non-MS)
+  SPDBSecInput           上海浦东发展银行
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSecInput.exe  (non-MS)
+  SPDBSecInputServ       上海浦东发展银行
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSecInputServ.exe  (non-MS)
+  SPDBSignServ           上海浦东发展银行
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSignServ.exe  (non-MS)
+  SPDBSignService        上海浦东发展银行
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSignService.exe  (non-MS)
+  WDDrvRpr_Watchdata CSP v5.1 SPDB TODO: <公司名>
+       C:\WINDOWS\SysWOW64\WatchDataV5\Watchdata CSP v5.1 SPDB\ccid_driver\WDDrvRpr_Watchdata CSP v5.1 SPDB.exe  <<< SUSPICIOUS
+  WDUIServer_Watchdata CSP v5.1 SPDB Watchdata
+       C:\Windows\SysWOW64\WatchDataV5\Watchdata CSP v5.1 SPDB\WDUIServer_Watchdata CSP v5.1 SPDB.exe  (non-MS)
+  WDTokenServer          Watchdata
+       C:\WINDOWS\SysWOW64\WatchDataV5\WDTokenServer\WDTokenServer.exe  (non-MS)
+  TbtP2pShortcutService  Intel Corporation
+       C:\WINDOWS\TbtP2pShortcutService.exe  (non-MS)
+  ThunderboltService     Intel Corporation
+       C:\WINDOWS\ThunderboltService.exe  (non-MS)
+  MoUsoCoreWorker        
+         <<< UNSIGNED/
+
+[2] Running services (non-MS / suspicious)
+  AESMService [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\sgx_psw.inf_amd64_ece153ca769ec179\aesm_service.exe
+  Appinfo []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  AppXSvc []
+       C:\WINDOWS\system32\svchost.exe -k wsappx -p
+  AudioEndpointBuilder []  <<< SUSPICIOUS
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  Audiosrv []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted -p
+  BDESVC []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs -p
+  BFE []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNoNetworkFirewall -p
+  BITS []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs -p
+  BrokerInfrastructure []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  BTAGService []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted
+  BthAvctpSvc []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceRedirectionGuard -p
+  bthserv []
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  camsvc []
+       C:\WINDOWS\system32\svchost.exe -k osprivacy -p
+  CDPSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  client_service [VMware, Inc.]
+       "C:\Program Files (x86)\VMware\VMware Horizon View Client\ClientService\horizon_client_service.exe" -SCMStartup mfwStartFlags=2
+  ClipSVC []
+       C:\WINDOWS\System32\svchost.exe -k wsappx -p
+  com.volcengine.corplink.service []
+       "C:\Program Files\CorpLink\current\corplink-service.exe"
+  com.volcengine.corplink.watcher.service []
+       "C:\Program Files\CorpLink\current\corplink-service.exe" watcher
+  CoreMessagingRegistrar []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNoNetwork -p
+  CoworkVMService []
+       "C:\Program Files\WindowsApps\Claude_1.11187.4.0_x64__pzs8sxrjxfjjc\app\resources\cowork-svc.exe"
+  cphs []  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_95fe435b2caddb3e\IntelCpHeciSvc.exe
+  cplspcon [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\iigd_dch.inf_amd64_95fe435b2caddb3e\IntelCpHDCPSvc.exe
+  CryptSvc []
+       C:\WINDOWS\system32\svchost.exe -k NetworkService -p
+  DcomLaunch []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  DeviceAssociationService []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  DevQueryBroker []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  Dhcp []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+  DiagTrack []
+       C:\WINDOWS\System32\svchost.exe -k utcsvc -p
+  DispBrokerDesktopSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  DisplayEnhancementService []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  Dnscache []
+       C:\WINDOWS\system32\svchost.exe -k NetworkService -p
+  DolbyDAXAPI [Dolby Laboratories]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\dax3_swc_aposvc.inf_amd64_c28b41707aefc6b9\DAX3API.exe
+  DPS []  <<< SUSPICIOUS
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNoNetwork -p
+  DusmSvc []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted -p -s DusmSvc
+  EPDService [ELAN Microelectronics Corp.]
+       C:\WINDOWS\System32\EPDService.exe
+  esifsvc [Intel Corporation]  <<< SUSPICIOUS
+       "C:\WINDOWS\System32\DriverStore\FileRepository\dptf_cpu.inf_amd64_1da48d5885266bb7\esif_uf.exe"
+  EventLog []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted -p
+  EventSystem []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceRedirectionGuard -p
+  FastPDFSvc [茉柏枘（上海）软件科技有限公司]  <<< SUSPICIOUS
+       C:\Program Files (x86)\fastpdf\fpprotect.exe
+  FirmwareSwitchService [Fibocom Wireless Inc.]
+       C:\WINDOWS\Firmware\FwSwitchbin\FwSwitchService.exe
+  FMAPOService [Fortemedia]
+       C:\WINDOWS\System32\FMService64.exe
+  FontCache []
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  ftnlsv3hv []
+       "C:\Program Files\Common Files\VMware\DeviceRedirectionCommon\ftnlsv.exe"
+  ftscanmgrhv []
+       "C:\Program Files\Common Files\VMware\ScannerRedirection\ftscanmgrhv.exe"
+  gpsvc []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k GPSvcGroup
+  HPPrintScanDoctorService [HP Inc.]  <<< SUSPICIOUS
+       "C:\Program Files\HPPrintScanDoctor\HPPrintScanDoctorService.exe"
+  IBMPMSVC [Lenovo]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\ibmpmdrv.inf_amd64_317aadafb86018c3\x64\ibmpmsvc.exe
+  icssvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+  igccservice [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\igcc_dch.inf_amd64_c18e9c8eed547b01\OneApp.IGCC.WinService.exe
+  igfxCUIService2.0.0.0 [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\cui_dch.inf_amd64_c36cd6406677db45\igfxCUIService.exe
+  IntelAudioService [Intel]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\intcoed.inf_amd64_581d7e91d349facc\\AS\\IAS\\IntelAudioService.exe
+  InventorySvc []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k InvSvcGroup -p
+  iphlpsvc []
+       C:\WINDOWS\System32\svchost.exe -k NetSvcs -p
+  jhi_service [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\dal.inf_amd64_8a3f88e34f6b8385\jhi_service.exe
+  KnightMDM []  <<< SUSPICIOUS
+       "C:\Program Files\KnightMDM\Agent\knightedge.exe" daemon
+  LanmanServer []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  LanmanWorkstation []
+       C:\WINDOWS\System32\svchost.exe -k NetworkService -p
+  LenovoSmartStandby [Lenovo]  <<< SUSPICIOUS
+       "C:\Windows\System32\DriverStore\FileRepository\smartstandbycomponent.inf_amd64_3d585c065d8f0236\SmartStandby.exe"
+  LicenseManager []
+       C:\WINDOWS\System32\svchost.exe -k LocalService -p
+  LITSSVC [Lenovo.]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\litsdrv.inf_amd64_0fefde8b58482d0b\x64\LITSSvc.exe
+  lmhosts []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted -p
+  LSM []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  MDCoreSvc [Microsoft Corporation]  <<< SUSPICIOUS
+       "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\MpDefenderCoreService.exe"
+  ModemAuthenticatorService [Intel]
+       C:\WINDOWS\System32\ModemAuthenticator.exe
+  mpssvc []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNoNetworkFirewall -p
+  NcbService []
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  netCertServerSPDBService [上海浦东发展银行]
+       C:\WINDOWS\SysWOW64\SPDBcertNew\netCertServerSPDBService.exe
+  netprofm []
+       C:\WINDOWS\System32\svchost.exe -k netprofm -p
+  NetSetupSvc []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs -p
+  NgcCtnrSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+  nsi []
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  OfficePLUS Service [MSOfficePLUSService]
+       C:\Program Files\Microsoft OfficePLUS\3.11.0.36530\addin\MSOfficePLUSService.exe
+  OnKey Service _SPDB [Tendyron Corporation]
+       C:\WINDOWS\SysWOW64\DBSer_SPDB.exe
+  PcaSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  PCManager Service Store [MSPCManagerService]
+       "C:\Program Files\WindowsApps\Microsoft.MicrosoftPCManager_3.21.6.0_x64__8wekyb3d8bbwe\PCManager\MSPCManagerService.exe"
+  PlugPlay []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  Power []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  PrintNotify []
+       C:\WINDOWS\system32\svchost.exe -k print
+  ProfSvc []
+       C:\WINDOWS\system32\svchost.exe -k UserProfileService -p
+  puppet [http://www.ruby-lang.org/]  <<< SUSPICIOUS
+       "C:\Program Files\Puppet Labs\Puppet\puppet\bin\ruby.exe" "C:\Program Files\Puppet Labs\Puppet\service\daemon.rb"
+  RasMan []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs
+  RmSvc []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted
+  RpcEptMapper []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k RPCSS -p
+  RpcSs []
+       C:\WINDOWS\system32\svchost.exe -k rpcss -p
+  RtkAudioUniversalService [Realtek Semiconductor]  <<< SUSPICIOUS
+       "C:\WINDOWS\System32\DriverStore\FileRepository\realtekservice.inf_amd64_55047240f73a1fa6\RtkAudUService64.exe"
+  Schedule []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  SecurityHealthService [Microsoft Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\system32\SecurityHealthService.exe
+  SENS []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k netsvcsRedirectionGuard -p
+  Sense [Microsoft Corporation]  <<< SUSPICIOUS
+       "C:\Program Files\Windows Defender Advanced Threat Protection\MsSense.exe"
+  ShellHWDetection []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs -p
+  smphost []
+       C:\WINDOWS\System32\svchost.exe -k smphost
+  SPDBSecInputServ [上海浦东发展银行]
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSecInputServ.exe
+  SPDBSignService [上海浦东发展银行]
+       C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSignService.exe
+  SSDPSRV []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceAndNoImpersonation -p
+  SstpSvc []  <<< SUSPICIOUS
+       C:\WINDOWS\system32\svchost.exe -k LocalService -p
+  StateRepository []
+       C:\WINDOWS\system32\svchost.exe -k appmodel -p
+  StiSvc []
+       C:\WINDOWS\system32\svchost.exe -k imgsvc
+  StorSvc []
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  SynHsaService [Synaptics Incorporated.]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\synawudfbiousbuwp.inf_amd64_203e1aa750b8f773\SynRpcServer.exe
+  SysMain []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  SystemEventsBroker []
+       C:\WINDOWS\system32\svchost.exe -k DcomLaunch -p
+  TbtHostControllerService [Intel Corporation]
+       C:\WINDOWS\ThunderboltService.exe
+  TbtP2pShortcutService [Intel Corporation]
+       C:\WINDOWS\TbtP2pShortcutService.exe
+  TextInputManagementService []
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  Themes []
+       C:\WINDOWS\System32\svchost.exe -k netsvcs -p
+  TimeBrokerSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+  TokenBroker []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  TPHKLOAD [Lenovo]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\fn.inf_amd64_8e91a39d67d49dc4\driver\TPHKLOAD.exe
+  TrkWks []
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  UserManager []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  UsoSvc []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  VMUSBArbService [VMware, Inc.]
+       "C:\Program Files (x86)\Common Files\VMware\USB\vmware-usbarbitrator64.exe"
+  vmwsprrdpwks [VMware]
+       "C:\Program Files\Common Files\VMware\SerialPortRedirection\Client\vmwsprrdpwks.exe"
+  Wcmsvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceNetworkRestricted -p -s Wcmsvc
+  WDDrvRpr_Watchdata CSP v5.1 [TODO: <公司名>]  <<< SUSPICIOUS
+       "C:\WINDOWS\SysWOW64\WatchDataV5\Watchdata CSP v5.1 SPDB\ccid_driver\WDDrvRpr_Watchdata CSP v5.1 SPDB.exe"
+  WdiSystemHost []
+       C:\WINDOWS\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  WdNisSvc [Microsoft Corporation]  <<< SUSPICIOUS
+       "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\NisSrv.exe"
+  WDTokenServer [Watchdata]
+       "C:\WINDOWS\SysWOW64\WatchDataV5\WDTokenServer\WDTokenServer.exe"
+  webthreatdefsvc []
+       C:\WINDOWS\system32\svchost.exe -k WebThreatDefense -p
+  WeType Management Service [Tencent]  <<< SUSPICIOUS
+       "C:\Program Files\Tencent\WeType\2.0.0.27\wetype_service.exe"
+  whesvc []
+       C:\WINDOWS\system32\svchost.exe -k whesvc -p
+  WinDefend [Microsoft Corporation]  <<< SUSPICIOUS
+       "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\MsMpEng.exe"
+  WinHttpAutoProxySvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalServiceHttp -p
+  Winmgmt []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  WlanSvc []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  wlidsvc []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  WMIRegistrationService [Intel Corporation]  <<< SUSPICIOUS
+       C:\WINDOWS\System32\DriverStore\FileRepository\mewmiprov.inf_amd64_0ce29d36fc8607e6\WMIRegistrationService.exe
+  WpnService []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  WSAIFabricSvc []
+       C:\WINDOWS\system32\svchost.exe -k WSAIFabricSvcGroup -p
+  wscsvc []
+       C:\WINDOWS\System32\svchost.exe -k LocalServiceNetworkRestricted -p
+  wuauserv []
+       C:\WINDOWS\system32\svchost.exe -k netsvcs -p
+  BluetoothUserService_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k BthAppGroup -p
+  cbdhsvc_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k ClipboardSvcGroup -p
+  CDPUserSvc_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k UnistackSvcGroup
+  DevicesFlowUserSvc_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k DevicesFlow
+  UdkUserSvc_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k UdkSvcGroup
+  webthreatdefusersvc_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  WpnUserService_728b3 []
+       C:\WINDOWS\system32\svchost.exe -k UnistackSvcGroup
+
+[3] Scheduled tasks (enabled, suspicious or frequent)
+  \bitlocker2crypt-v3
+       -> C:\Windows\system32\WindowsPowerShell\v1.0\powershell.exe
+  \ClearStaleIExplore
+       -> powershell.exe
+  \Enable_BitLocker
+       -> C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  \Get_SCEP_Info
+       -> C:\Users\admin\AppData\Local\scep\get-scep-cert.exe
+  \MicrosoftEdgeUpdateTaskMachineCore
+       -> C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  \MicrosoftEdgeUpdateTaskMachineUA
+       -> C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  \MicrosoftEdgeUpdateTaskUserS-1-5-21-1950754565-1675087318-3740386163-1001Core{ABB90DF8-478B-4439-9BC9-8A4722EBF24D}
+       -> C:\Users\admin\AppData\Local\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  \MicrosoftEdgeUpdateTaskUserS-1-5-21-1950754565-1675087318-3740386163-1001UA{06C13BC5-F784-4F8B-994D-3D8DB0A9EDE9}
+       -> C:\Users\admin\AppData\Local\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe
+  \OneDrive Per-Machine Standalone Update Task  <<< SUSPICIOUS
+       -> C:\Program Files\Microsoft OneDrive\OneDriveStandaloneUpdater.exe
+  \OneDrive Reporting Task-S-1-5-21-1950754565-1675087318-3740386163-1001  <<< SUSPICIOUS
+       -> C:\Program Files\Microsoft OneDrive\OneDriveStandaloneUpdater.exe
+  \OneDrive Startup Task-S-1-5-21-1950754565-1675087318-3740386163-1001  <<< SUSPICIOUS
+       -> C:\Program Files\Microsoft OneDrive\26.095.0519.0003\OneDriveLauncher.exe
+  \puppet_data_forwarder
+       -> C:\Program Files\Puppet Labs\Puppet\puppet\bin\ruby.exe
+  \puppet_helper
+       -> C:\ProgramData\puppethelper\puppethelper_win.exe
+  \QihooGetWordSearchFatch  <<< SUSPICIOUS
+       -> C:\Users\admin\AppData\Roaming\360Safe\SMLGetWord\GetWordSearch.exe
+  \Recover_BitLocker_Protectors  <<< SUSPICIOUS
+       -> C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+  \RtkAudUService64_BG  <<< SUSPICIOUS
+       -> ""C:\WINDOWS\System32\DriverStore\FileRepository\realtekservice.inf_amd64_55047240f73a1fa6\RtkAudUService64.exe""
+  \User_Feed_Synchronization-{2EC2B7BF-014D-421A-BE16-2F480D497DD5}
+       -> C:\WINDOWS\system32\msfeedssync.exe
+  \浦发银行安全输入程序
+       -> C:\WINDOWS\SysWOW64\SPDBEbank\SPDBSecInput.exe
+  \GoogleSystem\GoogleUpdater\GoogleUpdaterTaskSystem150.0.7863.0{30FD74CA-2A0E-4E95-871E-0689DD8D582F}
+       -> "C:\Program Files (x86)\Google\GoogleUpdater\150.0.7863.0\updater.exe"
+  \GoogleUserPEH\RunPlatformExperienceHelper_Daily
+       -> "C:\Program Files\Google\Chrome\Application\PlatformExperienceHelper\platform_experience_helper.exe"
+  \GoogleUserPEH\RunPlatformExperienceHelper_Metrics
+       -> "C:\Program Files\Google\Chrome\Application\PlatformExperienceHelper\platform_experience_helper.exe"
+  \HP\HP Print Scan Doctor\Printer Health Monitor  <<< SUSPICIOUS
+       -> C:\Program Files\HPPrintScanDoctor\HPPrinterHealthMonitor.exe
+  \HP\HP Print Scan Doctor\Printer Health Monitor Logon  <<< SUSPICIOUS
+       -> C:\Program Files\HPPrintScanDoctor\HPPrinterHealthMonitor.exe
+  \Lenovo\Power Manager\Background monitor  <<< SUSPICIOUS
+       -> "C:\WINDOWS\SysWOW64\Lenovo\PowerMgr\PowerMgr.exe"
+  \Lenovo\Power Manager\Uninstall task  <<< SUSPICIOUS
+       -> %windir%\SysWOW64\PowerMgrInst.exe
+  \Lenovo\SmartStandby\Daily analysis  <<< SUSPICIOUS
+       -> C:\WINDOWS\System32\DriverStore\FileRepository\smartstandbycomponent.inf_amd64_3d585c065d8f0236\AutonomicMgr.exe
+  \Lenovo\SmartStandby\Uninstall Monitor  <<< SUSPICIOUS
+       -> %windir%\system32\SmartStandbyInst.exe
+  \Microsoft\Office\Office ClickToRun Service Monitor  <<< SUSPICIOUS
+       -> C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeC2RClient.exe
+  \Microsoft\Windows\Active Directory Rights Management Services Client\AD RMS Rights Policy Template Management (Manual)  <<< SUSPICIOUS
+  \Microsoft\Windows\AppID\EDP Policy Manager  <<< SUSPICIOUS
+  \Microsoft\Windows\Application Experience\PcaPatchDbTask  <<< SUSPICIOUS
+       -> %windir%\system32\rundll32.exe
+  \Microsoft\Windows\BitLocker\BitLocker MDM policy Refresh  <<< SUSPICIOUS
+  \Microsoft\Windows\CertificateServicesClient\CryptoPolicyTask  <<< SUSPICIOUS
+  \Microsoft\Windows\DeviceDirectoryClient\RegisterDevicePolicyChange  <<< SUSPICIOUS
+  \Microsoft\Windows\DeviceDirectoryClient\RegisterDeviceProtectionStateChanged  <<< SUSPICIOUS
+  \Microsoft\Windows\DeviceDirectoryClient\RegisterDeviceSettingChange  <<< SUSPICIOUS
+  \Microsoft\Windows\EnterpriseMgmt\MDMMaintenenceTask  <<< SUSPICIOUS
+       -> %windir%\system32\MDMAgent.exe
+  \Microsoft\Windows\ExploitGuard\ExploitGuard MDM policy Refresh  <<< SUSPICIOUS
+  \Microsoft\Windows\Flighting\FeatureConfig\SafeguardsReconciliation  <<< SUSPICIOUS
+  \Microsoft\Windows\Flighting\OneSettings\RefreshCache  <<< SUSPICIOUS
+  \Microsoft\Windows\Hotpatch\Monitoring  <<< SUSPICIOUS
+       -> %systemroot%\system32\cmd.exe
+  \Microsoft\Windows\input\RemoteTouchpadSyncDataAvailable  <<< SUSPICIOUS
+  \Microsoft\Windows\input\TouchpadSyncDataAvailable  <<< SUSPICIOUS
+  \Microsoft\Windows\InstallService\ScanForUpdatesAsUser  <<< SUSPICIOUS
+  \Microsoft\Windows\PI\Secure-Boot-Update  <<< SUSPICIOUS
+  \Microsoft\Windows\PI\SecureBootEncodeUEFI  <<< SUSPICIOUS
+       -> %WINDIR%\system32\SecureBootEncodeUEFI.exe
+  \Microsoft\Windows\Plug and Play\Device Install Group Policy  <<< SUSPICIOUS
+  \Microsoft\Windows\Plug and Play\Sysprep Generalize Drivers  <<< SUSPICIOUS
+       -> %SystemRoot%\System32\drvinst.exe
+  \Microsoft\Windows\Shell\FamilySafetyMonitor  <<< SUSPICIOUS
+       -> %windir%\System32\wpcmon.exe
+  \Microsoft\Windows\SoftwareProtectionPlatform\SvcRestartTask  <<< SUSPICIOUS
+  \Microsoft\Windows\SpacePort\SpaceAgentTask  <<< SUSPICIOUS
+       -> %windir%\system32\SpaceAgent.exe
+  \Microsoft\Windows\TextServicesFramework\MsCtfMonitor  <<< SUSPICIOUS
+  \Microsoft\Windows\Windows Defender\Windows Defender Cache Maintenance  <<< SUSPICIOUS
+       -> C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\MpCmdRun.exe
+  \Microsoft\Windows\Windows Defender\Windows Defender Cleanup  <<< SUSPICIOUS
+       -> C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\MpCmdRun.exe
+  \Microsoft\Windows\Windows Defender\Windows Defender Verification  <<< SUSPICIOUS
+       -> C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26050.15-0\MpCmdRun.exe
+  \Microsoft\Windows\WindowsAI\Recall\PolicyConfiguration  <<< SUSPICIOUS
+  \Microsoft\Windows\WindowsUpdate\Refresh Group Policy Cache  <<< SUSPICIOUS
+  \SoftLanding\S-1-5-21-1950754565-1675087318-3740386163-1001\SoftLandingCreativeManagementTask
+  \SoftLanding\S-1-5-21-1950754565-1675087318-3740386163-1001\SoftLandingDeferralTask-{b2d64728-4090-41d8-a175-fae005e3a110}
+
+[4] Autorun (Run keys)
+  [HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] SecurityHealth = C:\WINDOWS\system32\SecurityHealthSystray.exe  <<< SUSPICIOUS
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run] InterPass3000_SPDB = C:\Program Files (x86)\浦发银行U-KEY管理工具\飞天诚信\certd_I3000_SPDB.exe
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run] DBSvr_SPDB.exe = DBSvr_SPDB.exe
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run] WDSPDBUSBKeyTool.exe = C:\Program Files (x86)\浦发银行\握奇\WDSPDBUSBKeyTool.exe -RunAsHide
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run] WDUIServer_Watchdata CSP v5.1 SPDB.exe = C:\WINDOWS\system32\WatchDataV5\Watchdata CSP v5.1 SPDB\WDUIServer_Watchdata CSP v5.1 SPDB.exe
+  [HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Run] SunJavaUpdateSched = "C:\Program Files (x86)\Common Files\Java\Java Update\jusched.exe"
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] OneDrive = "C:\Program Files\Microsoft OneDrive\OneDrive.exe" /background  <<< SUSPICIOUS
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] Microsoft Edge Update = "C:\Users\admin\AppData\Local\Microsoft\EdgeUpdate\1.3.239.19\MicrosoftEdgeUpdateCore.exe"
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] Feishu = "C:\Users\admin\AppData\Local\Feishu\Feishu.exe"
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] BaiduYunDetect = "C:\Users\admin\AppData\Roaming\baidu\BaiduNetdisk\YunDetectService.exe"  <<< SUSPICIOUS
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] 360huabao = C:\Users\admin\AppData\Roaming\360huabao\360huabao.exe /hb:5 /from:2  <<< SUSPICIOUS
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] Weixin = "C:\Program Files\Tencent\Weixin\Weixin.exe" -autorun  <<< SUSPICIOUS
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] DingTalk = C:\Program Files (x86)\DingDing\DingtalkLauncher.exe /autorun
+  [HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] CorpLink = "C:\Program Files\CorpLink\current\Client\CorpLink.exe" --hidden
+
+================================================
+Look for <<< SUSPICIOUS lines, esp. anything that could periodically
+modify IE/registry (cleaner/optimizer/security/management agent).
+

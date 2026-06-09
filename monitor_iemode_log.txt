@@ -1,0 +1,10 @@
+﻿==== monitor start 2026-06-09 20:47:00 interval=30s for 30min ====
+Watching: IE COM regkey, IE policy, IE-COM-create test, proc counts
+Tip: use EBS normally during this; note when it breaks vs the log timeline.
+[20:47:00] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=0 iexplore=2
+[20:47:30] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=0 iexplore=4
+[20:48:01] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=9 iexplore=8
+[20:48:31] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=8
+[20:49:01] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=0 iexplore=10
+[20:49:32] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=14
+[20:50:02] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=14

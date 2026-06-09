@@ -1,0 +1,33 @@
+﻿Log target: C:\Users\admin\Documents\.src\github.com\temp\enable_ie_fod_log.txt
+Enable IE-mode FoD (ADMIN)  2026-06-09 15:33:09
+Machine: DESKTOP-2BJ6P4J  User: admin
+Build: 10.0.26200.0
+
+==== 1. current IE-mode FoD state ====
+  Name : Browser.InternetExplorer~~~~0.0.11.0
+  State: Installed
+
+==== 2. install if needed ====
+  Already Installed. No install needed.
+  >> If Edge IE mode still failed before, the issue is just enabling it
+     in Edge settings (no admin) - not the FoD.
+
+==== 3. verify after ====
+  State now: Installed
+
+==== 4. enable Edge IE-mode policy (HKLM) ====
+  InternetExplorerIntegrationLevel = 1  (1 = IE mode allowed)
+
+==== SELF-CHECK ====
+  [PASS] IE-mode FoD installed   (State=Installed)
+  [PASS] Edge IE-mode policy set  (InternetExplorerIntegrationLevel=1)
+  >> OVERALL: PASS. Restart PC, then Edge IE mode is ready (enable in edge://settings/defaultBrowser).
+
+==== Next (no admin needed) ====
+  1. Restart the PC if any install happened above.
+  2. Open Edge -> edge://settings/defaultBrowser
+  3. 'Allow sites to be reloaded in Internet Explorer mode' -> Allow.
+  4. Then you have the same IE engine the rest of the world uses for EBS.
+
+  (This script did NOT open EBS, per your request.)
+

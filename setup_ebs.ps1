@@ -91,9 +91,9 @@ $xmlDir=Split-Path $xmlPath
 if(-not(Test-Path $xmlDir)){ New-Item -ItemType Directory -Path $xmlDir -Force | Out-Null }
 # build XML by string concat (no here-string, avoids newline/encoding pitfalls)
 $nl=[Environment]::NewLine
-$xml = '<site-list version="207">' + $nl
-$xml += '  <site url="ebsprod.bytedance.net:8000" allow-redirect="true"><compat-mode>IE7Enterprise</compat-mode><open-in>IE11</open-in></site>' + $nl
-$xml += '  <site url="ebsprod.bytedance.net" allow-redirect="true"><compat-mode>IE7Enterprise</compat-mode><open-in>IE11</open-in></site>' + $nl
+$xml = '<site-list version="208">' + $nl
+$xml += '  <site url="ebsprod.bytedance.net:8000" allow-redirect="true"><compat-mode>IE10</compat-mode><open-in>IE11</open-in></site>' + $nl
+$xml += '  <site url="ebsprod.bytedance.net" allow-redirect="true"><compat-mode>IE10</compat-mode><open-in>IE11</open-in></site>' + $nl
 $xml += '  <site url="sso.bytedance.com"><open-in>None</open-in></site>' + $nl
 $xml += '  <site url="login.bytedance.com"><open-in>None</open-in></site>' + $nl
 $xml += '</site-list>'

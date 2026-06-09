@@ -1,0 +1,41 @@
+EBS 本地登录验证报告 v2
+时间: 2026-06-09 14:07:40
+登录入口: http://ebsprod.bytedance.net:8000/OA_HTML/AppsLocalLogin.jsp
+(口令仅内存使用，不写入任何文件)
+
+==================== 1. 抓取登录页(全新会话) ====================
+GET 状态码: 200
+登录页已存: /c/Users/admin/Documents/.src/github.com/temp/login_page.html (3350 字节)
+初始 cookie:
+   (domain )
+  JSESSIONID (domain ebsprod.bytedance.net)
+
+==================== 2. 解析登录表单 ====================
+form action: (未找到，可能 JS 提交)
+form method: (未标注)
+页面 input 字段:
+  name=usernameField type=text value=
+  name=passwordField type=password value=
+推断 POST 目标: http://ebsprod.bytedance.net:8000/OA_HTML/AppsLocalLogin.jsp
+
+==================== 3. 输入凭据 ====================
+用户名: 张丹丹
+口令长度: 11 位 (内容不记录)
+
+==================== 4. 提交登录(单次，不重试) ====================
+登录后响应头(首部):
+HTTP/1.1 400 Bad Request
+Date: Tue, 09 Jun 2026 06:08:26 GMT
+Server: 
+Content-Length: 223
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+
+==================== 5. 结果判定 ====================
+登录后页面大小: 223 字节
+>> 无法自动判定，请人工查看 after_login.html 标题与内容。
+登录后页面标题: <title>400 Bad Request</title>
+
+==================== 结束 ====================
+回传文件: login_test_result.txt, login_page.html, after_login.html
+(口令未写入任何文件；cookie jar 已删除)

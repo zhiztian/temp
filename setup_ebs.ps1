@@ -110,13 +110,16 @@ Flush
 W ""
 W "[STEP 3] Install logon auto-clean task (for Edge149 exit-crash residue)"
 $taskName="ClearStaleIExplore"
-$cmd='Get-Process iexplore -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue'
-$enc=[Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($cmd))
+# write a small cleaner script, point the task at it (keeps /TR under 261 chars)
+$cleanerPath = Join-Path $env:ProgramData "ClearStaleIExplore.ps1"
+$cleanerBody = 'Get-Process iexplore -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue'
+[System.IO.File]::WriteAllText($cleanerPath, $cleanerBody, (New-Object System.Text.UTF8Encoding($false)))
 schtasks /Delete /TN $taskName /F 2>$null | Out-Null
-$action="powershell.exe -NoProfile -WindowStyle Hidden -EncodedCommand $enc"
+$action="powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$cleanerPath`""
 $createOut = schtasks /Create /TN $taskName /TR $action /SC ONLOGON /RL HIGHEST /F 2>&1
 $createRc = $LASTEXITCODE
 $taskOk = ($createRc -eq 0)
+W "  cleaner script: $cleanerPath"
 W "  task '$taskName': $(OK $taskOk) (rc=$createRc)"
 if(-not $taskOk){ W ("    schtasks output: {0}" -f ($createOut | Out-String).Trim()) }
 Flush

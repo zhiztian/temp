@@ -27,6 +27,39 @@ function Flush(){ try { $log.ToString() | Out-File -FilePath $Out -Encoding UTF8
 W "Fix stubborn WOW6432Node IE COM key (ADMIN)  $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 W "Machine: $env:COMPUTERNAME  User: $env:USERNAME"
 
+# --- enable SeTakeOwnership + SeRestore + SeBackup privileges (needed even as admin) ---
+$privSig = @"
+using System;
+using System.Runtime.InteropServices;
+public class Priv {
+  [DllImport("advapi32.dll", SetLastError=true)]
+  static extern bool OpenProcessToken(IntPtr h, int acc, out IntPtr tok);
+  [DllImport("advapi32.dll", SetLastError=true)]
+  static extern bool LookupPrivilegeValue(string host, string name, out long luid);
+  [DllImport("advapi32.dll", SetLastError=true)]
+  static extern bool AdjustTokenPrivileges(IntPtr tok, bool dis, ref TOKPRIV1LUID np, int len, IntPtr prev, IntPtr rlen);
+  [DllImport("kernel32.dll")] static extern IntPtr GetCurrentProcess();
+  [StructLayout(LayoutKind.Sequential, Pack=1)]
+  struct TOKPRIV1LUID { public int Count; public long Luid; public int Attr; }
+  const int SE_PRIVILEGE_ENABLED = 0x2;
+  const int TOKEN_ADJUST_PRIVILEGES = 0x20;
+  const int TOKEN_QUERY = 0x8;
+  public static bool Enable(string priv) {
+    IntPtr tok;
+    if(!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY, out tok)) return false;
+    TOKPRIV1LUID tp; tp.Count=1; tp.Attr=SE_PRIVILEGE_ENABLED;
+    if(!LookupPrivilegeValue(null, priv, out tp.Luid)) return false;
+    return AdjustTokenPrivileges(tok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
+  }
+}
+"@
+try {
+    Add-Type -TypeDefinition $privSig -ErrorAction Stop
+    foreach($pv in @("SeTakeOwnershipPrivilege","SeRestorePrivilege","SeBackupPrivilege")){
+        $r=[Priv]::Enable($pv); W "  privilege $pv enabled: $r"
+    }
+} catch { W "  privilege enable setup failed: $($_.Exception.Message)" }
+
 $CLSID="{0002DF01-0000-0000-C000-000000000046}"
 # the sub-hive path (without hive root) for .NET RegistryKey API
 $subPath = "SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"

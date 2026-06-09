@@ -1,0 +1,31 @@
+﻿Find old IE  2026-06-09 15:25:27
+Machine: DESKTOP-2BJ6P4J  Build: 10.0.26200.0
+
+==== 1. iexplore.exe files ====
+  EXISTS: C:\Program Files\Internet Explorer\iexplore.exe
+    FileVersion=11.00.26100.1 (WinBuild.160101.0800) ProductVersion=11.00.26100.1
+  EXISTS: C:\Program Files (x86)\Internet Explorer\iexplore.exe
+    FileVersion=11.00.26100.1 (WinBuild.160101.0800) ProductVersion=11.00.26100.1
+
+==== 2. IE engine DLLs ====
+  C:\Windows\System32\mshtml.dll  ver=11.00.26100.8457 (WinBuild.160101.0800)
+  C:\Windows\System32\ieframe.dll  ver=11.00.26100.8457 (WinBuild.160101.0800)
+  C:\Windows\System32\jscript9.dll  ver=11.00.26100.8457 (WinBuild.160101.0800)
+
+==== 3. Win11 IE-mode Feature-on-Demand ====
+  query failed: 请求的操作需要提升。
+
+
+==== 4. IE COM owner ====
+  InternetExplorer.Application -> "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+
+==== 5. launch test (about:blank, NOT EBS) ====
+  iexplore proc: 0 -> 0
+  msedge   proc: 8 -> 10
+  360*     proc: 2 -> 2
+  >> RESULT: redirected to Edge. standalone IE does NOT run.
+
+==== Conclusion ====
+  Old standalone IE = usable ONLY if section5 says 'real standalone IE LAUNCHED'.
+  Otherwise the ONLY IE engine available is via section3 FoD + Edge IE mode.
+

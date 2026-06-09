@@ -1,4 +1,4 @@
-﻿EBS IE Mode setup  2026-06-09 18:40:05
+﻿EBS IE Mode setup  2026-06-09 18:42:30
 Machine: DESKTOP-2BJ6P4J  User: admin
 ================================================
 
@@ -11,10 +11,16 @@ Machine: DESKTOP-2BJ6P4J  User: admin
   IE mode policy=1: [OK] ; site list written: [OK]
 
 [STEP 3] Install logon auto-clean task (for Edge149 exit-crash residue)
-  task 'ClearStaleIExplore': [FAIL]
+  task 'ClearStaleIExplore': [FAIL] (rc=-2147467259)
+    schtasks output: schtasks : 错误: '/TR' 选项的值不能超过 261 字符。
+所在位置 C:\Users\admin\Documents\.src\github.com\temp\setup_ebs.ps1:117 字符: 14
++ ... createOut = schtasks /Create /TN $taskName /TR $action /SC ONLOGON /R ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (错误: '/TR' 选项的值不能超过 261 字符。:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
 
 [STEP 4] Clear current stale iexplore
-  current iexplore count: 20, clearing...
+  current iexplore count: 4, clearing...
 
 [STEP 5] Live test: create IE COM object
   [FAIL] IE COM create failed: 0x80080005

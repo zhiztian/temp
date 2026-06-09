@@ -1,0 +1,18 @@
+﻿==== PASSIVE monitor start 2026-06-09 21:05:28 interval=15s for 20min ====
+Records: process appear(+)/disappear(-), IE COM regkey changes, 360 activity.
+Use EBS normally during this. NO IE-COM test (won't self-pollute).
+[start] IE-COM-regkey = "C:\Program Files\Internet Explorer\iexplore.exe"
+[start] processes: 245
+[21:05:43] + msedge (PID 2512)  <<<
+[21:05:43] + msedge (PID 16696)  <<<
+[21:05:43] + msedge (PID 14540)  <<<
+[21:05:43] + msedge (PID 12324)  <<<
+[21:05:43] + msedge (PID 18540)  <<<
+[21:05:43] + msedge (PID 7960)  <<<
+[21:05:43] + msedge (PID 16512)  <<<
+[21:05:43] + msedge (PID 16076)  <<<
+[21:05:43] + msedge (PID 4428)  <<<
+[21:05:43] + msedge (PID 7356)  <<<
+[21:06:28] + iexplore (PID 14176)  <<<
+[21:06:28] + iexplore (PID 16016)  <<<
+[21:06:28] - msedge (PID 12324)

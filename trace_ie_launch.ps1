@@ -25,10 +25,15 @@ W "Machine: $env:COMPUTERNAME  User: $env:USERNAME"
 # --- 1. enable process auditing + cmdline capture ---
 W ""
 W "==== 1. enable process auditing ===="
-$prevAudit = (auditpol /get /subcategory:"Process Creation" 2>&1 | Out-String).Trim()
-W "  prev Process Creation audit: $prevAudit"
-auditpol /set /subcategory:"Process Creation" /success:enable /failure:enable | Out-Null
-auditpol /set /subcategory:"Process Termination" /success:enable | Out-Null
+# use GUIDs (language-independent): Process Creation / Termination
+$GUID_CREATE = "{0CCE922B-69AE-11D9-BED3-505054503030}"
+$GUID_TERM   = "{0CCE922C-69AE-11D9-BED3-505054503030}"
+$prevAudit = (auditpol /get /subcategory:$GUID_CREATE 2>&1 | Out-String).Trim()
+W "  prev audit (create): $prevAudit"
+$r1 = auditpol /set /subcategory:$GUID_CREATE /success:enable /failure:enable 2>&1
+$r2 = auditpol /set /subcategory:$GUID_TERM /success:enable 2>&1
+W "  set create: $($r1 | Out-String).Trim()"
+W "  set term  : $($r2 | Out-String).Trim()"
 # include command line in 4688
 $cmdKey="HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit"
 if(-not(Test-Path $cmdKey)){ New-Item -Path $cmdKey -Force | Out-Null }
@@ -58,22 +63,37 @@ Flush
 
 # --- 3. dump process create/exit events for iexplore in the window ---
 W ""
-W "==== 3. process create/terminate events (iexplore) since trigger ===="
+W "==== 3. process create/terminate events (iexplore/edge) since trigger ===="
+# parse via event XML Data fields (language-independent), not regex on Message
+function GetData($ev,$name){
+    try{ $x=[xml]$ev.ToXml(); ($x.Event.EventData.Data | Where-Object{$_.Name -eq $name}).'#text' }catch{ '' }
+}
 try{
-    Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4688,4689; StartTime=$tStart} -EA SilentlyContinue |
-        Where-Object { $_.Message -match 'iexplore|Internet Explorer|msedge|ie_to_edge|SunLogin|360' } |
-        Sort-Object TimeCreated |
-        ForEach-Object {
-            $m=$_.Message
-            $newproc = if($m -match 'New Process Name:\s*(.+)'){$matches[1].Trim()} elseif($m -match '新进程名称:\s*(.+)'){$matches[1].Trim()} else {''}
-            $parent  = if($m -match 'Creator Process Name:\s*(.+)'){$matches[1].Trim()} elseif($m -match '创建者进程名称:\s*(.+)'){$matches[1].Trim()} else {''}
-            $cmd     = if($m -match 'Process Command Line:\s*(.+)'){$matches[1].Trim()} elseif($m -match '进程命令行:\s*(.+)'){$matches[1].Trim()} else {''}
-            W "  [$($_.TimeCreated.ToString('HH:mm:ss'))] Id=$($_.Id)"
-            W "     new   : $newproc"
-            W "     parent: $parent"
-            if($cmd){ W "     cmd   : $cmd" }
+    $evs = Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4688,4689; StartTime=$tStart} -EA SilentlyContinue | Sort-Object TimeCreated
+    $shown=0
+    foreach($ev in $evs){
+        if($ev.Id -eq 4688){
+            $np = GetData $ev 'NewProcessName'
+            $pp = GetData $ev 'ParentProcessName'
+            $cl = GetData $ev 'CommandLine'
+            if("$np$pp$cl" -match 'iexplore|Internet Explorer|msedge|ie_to_edge|edge'){
+                W "  [$($ev.TimeCreated.ToString('HH:mm:ss'))] 4688 CREATE"
+                W "     new   : $np"
+                W "     parent: $pp"
+                if($cl){ W "     cmd   : $cl" }
+                $shown++
+            }
+        } else {
+            $np = GetData $ev 'ProcessName'
+            if($np -match 'iexplore|Internet Explorer|msedge'){
+                W "  [$($ev.TimeCreated.ToString('HH:mm:ss'))] 4689 EXIT"
+                W "     proc  : $np   status: $(GetData $ev 'Status')"
+                $shown++
+            }
         }
-}catch{ W "  security log read failed (auditing may need a moment): $_" }
+    }
+    if($shown -eq 0){ W "  (no iexplore/edge process events captured - auditing may not have been active yet)" }
+}catch{ W "  security log read failed: $_" }
 Flush
 
 # --- 4. look for blockers: AppLocker / WDAC / Defender / SmartScreen ---
@@ -111,8 +131,8 @@ Flush
 # --- 6. restore previous audit setting ---
 W ""
 W "==== 6. restore audit settings ===="
-auditpol /set /subcategory:"Process Creation" /success:disable /failure:disable | Out-Null
-auditpol /set /subcategory:"Process Termination" /success:disable | Out-Null
+auditpol /set /subcategory:$GUID_CREATE /success:disable /failure:disable | Out-Null
+auditpol /set /subcategory:$GUID_TERM /success:disable | Out-Null
 Remove-ItemProperty -Path $cmdKey -Name "ProcessCreationIncludeCmdLine_Enabled" -EA SilentlyContinue
 W "  audit settings restored to default (disabled)"
 

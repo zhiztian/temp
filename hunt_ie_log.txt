@@ -1,0 +1,72 @@
+﻿IE engine hunt  2026-06-09 15:08:07
+Machine: DESKTOP-2BJ6P4J  User: admin
+OS Build: 10.0.26200.0
+
+==== 1. Edge IE-mode actual config ====
+  [policy] HKLM IntegrationLevel = 
+  [policy] HKCU IntegrationLevel = 
+  [policy] HKLM SiteList = 
+  [policy] HKCU SiteList = 
+  Pref file: C:\Users\admin\AppData\Local\Microsoft\Edge\User Data\Profile 1\Preferences
+    contains 'ebsprod' at 6483 -> snippet: ebsprod.bytedance.net:8000/":{"date_added":"13425446135123412","engine":2,"source":3,"visit_state":false,"visits_after_e
+
+==== 2. IE COM class registration ====
+  HKLM:\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+  HKLM:\SOFTWARE\Classes\Wow6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+
+==== 3. installed browsers / IE-core candidates ====
+  C:\Program Files (x86)\Internet Explorer\iexplore.exe
+  C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\msedge.exe
+  C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+  C:\Program Files (x86)\Microsoft\EdgeCore\148.0.3967.96\msedge.exe
+  C:\Program Files (x86)\Microsoft\EdgeCore\149.0.4022.52\msedge.exe
+  C:\Program Files (x86)\Microsoft\EdgeCore\Optimized\msedge.exe
+  C:\Program Files (x86)\Microsoft\EdgeWebView\Application\148.0.3967.96\msedge.exe
+  C:\Program Files\Google\Chrome\Application\chrome.exe
+  C:\Program Files\Internet Explorer\iexplore.exe
+  C:\Users\admin\AppData\Roaming\360se6\Application\16.0.1378.0\installer\360se.exe
+  C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe
+
+==== 4. default url handler ====
+  http  ProgId = ChromeHTML
+  https ProgId = ChromeHTML
+
+==== 5. Java deployment cache (applet run history) ====
+  Java cache exists: C:\Users\admin\AppData\LocalLow\Sun\Java\Deployment\cache
+  deployment.properties:
+    #deployment.properties
+    #Tue Jun 09 15:06:46 CST 2026
+    deployment.modified.timestamp=1780988806752
+    deployment.roaming.profile=false
+    deployment.version=8
+    deployment.expiration.decision.timestamp.11.333.2=1780653214
+    deployment.expiration.decision.suppression.11.333.2=false
+    deployment.expiration.decision.11.333.2=later
+    #Java Deployment jre's
+    #Tue Jun 09 15:06:46 CST 2026
+    deployment.javaws.jre.0.registered=true
+    deployment.javaws.jre.0.platform=1.8
+    deployment.javaws.jre.0.osname=Windows
+    deployment.javaws.jre.0.path=C\:\\Program Files (x86)\\Java\\jre1.8.0_333\\bin\\javaw.exe
+    deployment.javaws.jre.0.product=1.8.0_333
+    deployment.javaws.jre.0.osarch=x86
+    deployment.javaws.jre.0.location=http\://java.sun.com/products/autodl/j2se
+    deployment.javaws.jre.0.enabled=true
+    deployment.javaws.jre.0.args=
+
+==== 6. shortcuts mentioning EBS / IE / 360 ====
+  LNK: C:\Users\admin\Desktop\360安全浏览器.lnk
+      Target: C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe
+      Args  : 
+  LNK: C:\Users\admin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\360安全浏览器\360安全浏览器.lnk
+      Target: C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe
+      Args  : 
+  LNK: C:\Users\admin\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\360安全浏览器\360安全浏览器无痕模式.lnk
+      Target: C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe
+      Args  : --incognito
+
+==== Verdict hints ====
+  - Section1 SiteList/Pref has ebsprod  -> Edge IE-mode WAS configured, just needs re-trigger
+  - Section3 lists 360se*.exe           -> 360 compat mode is the prior working path
+  - Section6 shortcut with ebsprod+args -> that is exactly how it was opened before; reuse it
+

@@ -68,16 +68,31 @@ foreach($t in @("MicrosoftEdgeUpdateTaskMachineCore","MicrosoftEdgeUpdateTaskMac
 W "  services + tasks re-enabled"
 Flush
 
-# --- 3. winget upgrade (preferred) ---
+# --- 3. winget upgrade (background) + live progress ---
 W ""
-W "[3] winget upgrade Microsoft.Edge"
+W "[3] winget upgrade Microsoft.Edge (with progress)"
 $winget=(Get-Command winget.exe -ErrorAction SilentlyContinue).Source
 if($winget){
     try{ Start-Process $winget -ArgumentList @("pin","remove","--id","Microsoft.Edge","--exact") -Wait -WindowStyle Hidden -EA SilentlyContinue | Out-Null }catch{}
+    # run winget in background so we can show progress
+    $wlog="$env:TEMP\winget_edge.log"
+    $startVer = Get-EdgeVer
     try{
         $p=Start-Process $winget -ArgumentList @("upgrade","--id","Microsoft.Edge","--exact","--source","winget",
-            "--accept-source-agreements","--accept-package-agreements","--disable-interactivity","--silent","--include-unknown") -Wait -PassThru
-        W "  winget upgrade exit: $($p.ExitCode)"
+            "--accept-source-agreements","--accept-package-agreements","--silent","--include-unknown",
+            "--log","`"$wlog`"") -PassThru -WindowStyle Hidden
+        $spin="|/-\"; $i=0; $secs=0
+        while(-not $p.HasExited){
+            Start-Sleep -Seconds 3; $secs+=3
+            # activity indicators: EdgeUpdate/installer running? installer size?
+            $instProc = @(Get-Process -EA SilentlyContinue | Where-Object { $_.ProcessName -match 'MicrosoftEdge_X64|setup|installer|MicrosoftEdgeUpdate' }).Count
+            $nowVer = Get-EdgeVer
+            $c=$spin[$i % 4]; $i++
+            Write-Host ("`r  [$c] winget running ${secs}s | edge-ver=$nowVer | installer-procs=$instProc   ") -NoNewline
+            if($secs -gt 600){ Write-Host ""; W "  winget >10min, breaking wait"; break }
+        }
+        Write-Host ""
+        if($p.HasExited){ W "  winget exit: $($p.ExitCode) (after ${secs}s)" }
     }catch{ W "  winget failed: $($_.Exception.Message)" }
 }else{ W "  winget.exe not found" }
 Flush

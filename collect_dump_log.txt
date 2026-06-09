@@ -1,4 +1,4 @@
-﻿Collect IE crash dump (ADMIN)  2026-06-09 20:19:08
+﻿Collect IE crash dump (ADMIN)  2026-06-09 20:37:26
 
 ==== 1. ensure LocalDumps (global + iexplore) ====
   set: LocalDumps -> C:\IEDumps
@@ -6,8 +6,9 @@
   NOTE: LocalDumps applies to processes started AFTER this point.
 
 ==== 2. scan for existing dumps (all locations) ====
-  C:\IEDumps\iexplore.exe.13404.dmp  1761KB  06/09/2026 20:18:53
+  C:\IEDumps\iexplore.exe.7588.dmp  1762KB  06/09/2026 20:37:12
+  C:\IEDumps\iexplore.exe.17032.dmp  1763KB  06/09/2026 20:37:03
 
 ==== 3. package newest dump ====
-  zipped: C:\Users\admin\Documents\.src\github.com\temp\iexplore_dump.zip  (189 KB)  from iexplore.exe.13404.dmp
+  zipped: C:\Users\admin\Documents\.src\github.com\temp\iexplore_dump.zip  (187 KB)  from iexplore.exe.7588.dmp
 

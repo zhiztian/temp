@@ -1,0 +1,13 @@
+﻿Disable Edge background/startup-boost  2026-06-09 20:29:53
+================================================
+  HKLM:\SOFTWARE\Policies\Microsoft\Edge : StartupBoost=0, BackgroundMode=0  [OK]
+  HKCU:\SOFTWARE\Policies\Microsoft\Edge : StartupBoost=0, BackgroundMode=0  [OK]
+
+Verify (HKLM):
+  StartupBoostEnabled=0  BackgroundModeEnabled=0  [OK]
+
+================================================
+Done. Now Edge will fully exit when you close it.
+Next: use open_ebs.ps1 to open EBS (it kills any leftover Edge first).
+Verify live at edge://policy (StartupBoostEnabled / BackgroundModeEnabled = false).
+

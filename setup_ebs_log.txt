@@ -1,0 +1,41 @@
+﻿EBS IE Mode setup  2026-06-09 18:40:05
+Machine: DESKTOP-2BJ6P4J  User: admin
+================================================
+
+[STEP 1] Fix IE COM registry
+  [OK] HKLM\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+  [OK] HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+  keys fixed: 2/2  [OK]
+
+[STEP 2] Configure Edge IE mode policy + site list
+  IE mode policy=1: [OK] ; site list written: [OK]
+
+[STEP 3] Install logon auto-clean task (for Edge149 exit-crash residue)
+  task 'ClearStaleIExplore': [FAIL]
+
+[STEP 4] Clear current stale iexplore
+  current iexplore count: 20, clearing...
+
+[STEP 5] Live test: create IE COM object
+  [FAIL] IE COM create failed: 0x80080005
+         检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+  -- recent iexplore crash (WER 1000/1001) --
+    latest dump: C:\IEDumps\iexplore.exe.11792.dmp (1755 KB)
+
+================================================
+Setup done. Summary:
+  STEP1 registry  : [OK]
+  STEP2 IE policy : [OK]
+  STEP3 autoclean : [FAIL]
+  STEP5 IE test   : [FAIL]
+
+  !! Live test not passed. NOTE: IE mode policy needs a REBOOT to fully apply.
+     After reboot, open EBS with open_ebs.ps1. If still failing, send setup_ebs_log.txt back.
+
+[Daily use] To open EBS, run:
+    powershell -ExecutionPolicy Bypass -File .\open_ebs.ps1
+  or just open Edge to http://ebsprod.bytedance.net:8000 (auto IE mode)
+
+[If error again] Close ALL Edge, end all iexplore in Task Manager, reopen.
+[Root cause] Edge 149 dual_engine_adapter crashes on iexplore exit; MS will fix in a later version.
+

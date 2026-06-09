@@ -1,0 +1,121 @@
+﻿TRACE IE launch blocker (ADMIN)  2026-06-09 17:01:34
+Machine: DESKTOP-2BJ6P4J  User: admin
+
+==== 1. enable process auditing ====
+  prev Process Creation audit: 用法: AuditPol command [<sub-command><options>]
+
+
+
+
+
+命令 (每次执行仅允许一个命令)
+
+  /?               帮助(与上下文相关)
+
+  /get             显示当前审核策略。
+
+  /set             设置审核策略。
+
+  /list            显示可选择的策略元素。
+
+  /backup          将审核策略保存到文件。
+
+  /restore         将审核策略从文件还原。
+
+  /clear           清除审核策略。
+
+  /remove          删除用户账户的每用户审核策略。
+
+  /resourceSACL    配置全局资源 SACL
+
+
+
+
+
+有关每个命令的详细信息，请使用 AuditPol <command> /?
+
+auditpol : 发生错误 0x00000057:
+所在位置 C:\Users\admin\Documents\.src\github.com\temp\trace_ie_launch.ps1:28 字符: 15
++ ... revAudit = (auditpol /get /subcategory:"Process Creation" 2>&1 | Out- ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (发生错误 0x00000057::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+参数错误。
+  process auditing + cmdline capture enabled
+
+==== 2. trigger: create IE COM object ====
+  >> COM FAILED: 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+
+==== 3. process create/terminate events (iexplore) since trigger ====
+  [17:01:36] Id=4688
+     new   : 
+     parent: 
+  [17:01:36] Id=4688
+     new   : 
+     parent: 
+  [17:01:37] Id=4688
+     new   : 
+     parent: 
+  [17:01:37] Id=4688
+     new   : 
+     parent: 
+  [17:01:37] Id=4689
+     new   : 
+     parent: 
+  [17:01:37] Id=4688
+     new   : 
+     parent: 
+  [17:01:37] Id=4689
+     new   : 
+     parent: 
+  [17:01:37] Id=4689
+     new   : 
+     parent: 
+  [17:01:37] Id=4688
+     new   : 
+     parent: 
+  [17:01:37] Id=4688
+     new   : 
+     parent: 
+  [17:01:40] Id=4688
+     new   : 
+     parent: 
+  [17:01:42] Id=4688
+     new   : 
+     parent: 
+  [17:01:42] Id=4689
+     new   : 
+     parent: 
+  [17:01:42] Id=4688
+     new   : 
+     parent: 
+  [17:01:42] Id=4688
+     new   : 
+     parent: 
+  [17:01:42] Id=4688
+     new   : 
+     parent: 
+
+==== 4. block sources (AppLocker / WDAC / Defender) since trigger ====
+  [AppLocker] no iexplore-related blocks
+  [WDAC/CodeIntegrity] no iexplore-related blocks
+  [Defender] no iexplore-related blocks
+  [SmartScreen] no iexplore-related blocks
+
+==== 5. running security/remote/hook software ====
+  MpDefenderCoreService PID=5580 Path=
+  -- security-ish services (running) --
+     WinDefend - Microsoft Defender 防病毒服务
+
+==== 6. restore audit settings ====
+  audit settings restored to default (disabled)
+
+==== READ ====
+  - Section3: if iexplore (4688) is created then immediately 4689 with a
+    non-Edge parent killing it -> that parent is the blocker.
+  - Section3: if new proc is msedge/ie_to_edge_bho -> it's the OS redirect.
+  - Section4: any AppLocker/WDAC/Defender hit on iexplore = that's the block.
+  - Section5: lists remote/security software that commonly hooks process start.
+

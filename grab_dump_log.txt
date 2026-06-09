@@ -1,0 +1,13 @@
+﻿Grab iexplore mini-dump (ADMIN)  2026-06-09 17:43:54
+  mini-dump configured -> C:\Users\admin\AppData\Local\CrashDumps
+
+==== trigger crash (a few times to be sure) ====
+  try 1 COM failed (expected)
+  try 2 COM failed (expected)
+  try 3 COM failed (expected)
+
+==== new dumps ====
+  no dump captured. The crash may happen in a child iexplore not covered by
+  LocalDumps name filter, OR COM fails before iexplore is spawned at all.
+  Next: reproduce by actually opening EBS in Edge IE mode, then re-run.
+

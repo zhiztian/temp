@@ -1,187 +1,192 @@
 # =====================================================================
-#  EBS IE 模式 一键配置脚本  (Windows 11 / Edge IE Mode)
-#  一次跑完:修 IE COM 注册表 + 配 IE 模式策略+站点列表 + 装登录自动
-#  清残留任务 + 清当前残留。配完用 open_ebs.ps1 日常打开 EBS。
-#  自动提权(会弹 UAC,点"是")。用法:
+#  EBS IE Mode one-click setup  (Windows 11 / Edge IE Mode)
+#  Fixes IE COM registry + IE mode policy/site list + logon auto-clean
+#  task + clears residue. Then use open_ebs.ps1 daily to open EBS.
+#  Auto-elevates (UAC prompt -> Yes). Usage:
 #     powershell -ExecutionPolicy Bypass -File .\setup_ebs.ps1
+#  (ASCII only to avoid PS5.1 GBK encoding issues)
 # =====================================================================
 param([string]$LogPath = "")
-$selfPath=$MyInvocation.MyCommand.Path; $selfDir=Split-Path -Parent $selfPath
-if(-not $LogPath){ $LogPath=Join-Path $selfDir "setup_ebs_log.txt" }
+$selfPath = $MyInvocation.MyCommand.Path
+$selfDir  = Split-Path -Parent $selfPath
+if(-not $LogPath){ $LogPath = Join-Path $selfDir "setup_ebs_log.txt" }
 
-# ---- 自动提权 ----
+# ---- auto-elevate (force 64-bit powershell) ----
 $isAdmin=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if(-not $isAdmin){
-    Write-Host "需要管理员权限,正在请求提权(请在弹窗点'是')..." -ForegroundColor Yellow
-    try{ Start-Process powershell -Verb RunAs -ArgumentList @("-ExecutionPolicy","Bypass","-File","`"$selfPath`"","-LogPath","`"$LogPath`"") }
-    catch{ Write-Host "提权失败/被取消: $($_.Exception.Message)" -ForegroundColor Red }
-    Read-Host "按回车关闭此窗口"; return
+    Write-Host "Need admin. Requesting elevation (click Yes on UAC)..." -ForegroundColor Yellow
+    $psExe = "$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe"
+    try{ Start-Process $psExe -Verb RunAs -ArgumentList @("-NoProfile","-ExecutionPolicy","Bypass","-File","`"$selfPath`"","-LogPath","`"$LogPath`"") }
+    catch{ Write-Host "Elevation failed/cancelled: $($_.Exception.Message)" -ForegroundColor Red }
+    Read-Host "Press Enter to close this window"; return
 }
 
 $Out=$LogPath; $log=New-Object System.Text.StringBuilder
 function W($m){ [void]$log.AppendLine($m); Write-Host $m }
 function Flush(){ try{ $log.ToString()|Out-File -FilePath $Out -Encoding UTF8 }catch{} }
-function OK($b){ if($b){"[OK]"}else{"[失败]"} }
+function OK($b){ if($b){"[OK]"}else{"[FAIL]"} }
 
-W "EBS IE 模式 一键配置  $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-W "机器: $env:COMPUTERNAME  用户: $env:USERNAME"
+W "EBS IE Mode setup  $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+W "Machine: $env:COMPUTERNAME  User: $env:USERNAME"
 W "================================================"
 
-$iexplore='"C:\Program Files\Internet Explorer\iexplore.exe"'
-if(-not(Test-Path "C:\Program Files\Internet Explorer\iexplore.exe")){
-    W "!! 找不到 iexplore.exe,无法继续"; Flush; Read-Host "回车关闭"; return
+$iexploreValue = '"C:\Program Files\Internet Explorer\iexplore.exe"'
+$iexplorePath  = "C:\Program Files\Internet Explorer\iexplore.exe"
+if(-not(Test-Path $iexplorePath)){
+    W "!! iexplore.exe not found, cannot continue"; Flush; Read-Host "Enter to close"; return
 }
 
-# ============ 步骤1: 修复 IE COM 注册表(4个键指回 iexplore) ============
+# ============ STEP 1: fix IE COM registry (point back to iexplore) ============
 W ""
-W "【步骤1】修复 IE COM 注册表"
+W "[STEP 1] Fix IE COM registry"
 $CLSID="{0002DF01-0000-0000-C000-000000000046}"
-$keys=@(
-  "Registry::HKEY_CLASSES_ROOT\CLSID\$CLSID\LocalServer32",
-  "Registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\$CLSID\LocalServer32",
-  "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\$CLSID\LocalServer32",
-  "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"
+# write physical HKLM keys only (HKCR is a merged view, unreliable for writes)
+$physical=@(
+  "SOFTWARE\Classes\CLSID\$CLSID\LocalServer32",
+  "SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"
 )
-# 用 reg.exe 改默认值;被拒则 takeown+icacls 接管所有权后再改(全用系统自带命令,避免内联C#)
-# reg.exe 用的注册表路径(不带 Registry:: 前缀)
-$regPaths=@(
-  "HKCR\CLSID\$CLSID\LocalServer32",
-  "HKCR\WOW6432Node\CLSID\$CLSID\LocalServer32",
-  "HKLM\SOFTWARE\Classes\CLSID\$CLSID\LocalServer32",
-  "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"
-)
-$fixed=0
-foreach($rp in $regPaths){
+$adminSid=New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid,$null)
+
+function Set-IECom($sub,$val){
+    $rk=[Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,[Microsoft.Win32.RegistryView]::Registry64)
     try{
-        # 先直接写
-        $r = reg.exe add "$rp" /ve /d $iexplore /f 2>&1
-        if($LASTEXITCODE -ne 0){
-            # 被拒 -> 接管所有权再写。reg.exe 的 HKCR\WOW6432Node 对应 HKLM\SOFTWARE\Classes\WOW6432Node
-            $real = $rp -replace '^HKCR\\','HKLM\SOFTWARE\Classes\'
-            # 用 .NET 接管所有权(均为单行调用,无内联C#,避免换行符问题)
-            $sub = $real -replace '^HKLM\\',''
-            $rk=[Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,[Microsoft.Win32.RegistryView]::Registry64)
-            $adminSid=New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid,$null)
-            $ko=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::TakeOwnership)
-            $acl=$ko.GetAccessControl([System.Security.AccessControl.AccessControlSections]::None); $acl.SetOwner($adminSid); $ko.SetAccessControl($acl); $ko.Close()
-            $k2=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
-            $a2=$k2.GetAccessControl(); $rule=New-Object System.Security.AccessControl.RegistryAccessRule($adminSid,[System.Security.AccessControl.RegistryRights]::FullControl,"None","None","Allow"); $a2.AddAccessRule($rule); $k2.SetAccessControl($a2); $k2.Close()
-            $k3=$rk.OpenSubKey($sub,$true); $k3.SetValue("",$iexplore,[Microsoft.Win32.RegistryValueKind]::String); $k3.Close(); $rk.Close()
+        # try normal write first
+        $key=$rk.OpenSubKey($sub,$true)
+        if($null -eq $key){ $key=$rk.CreateSubKey($sub) }
+        if($null -ne $key){
+            try{ $key.SetValue("",$val,[Microsoft.Win32.RegistryValueKind]::String); $key.Close(); return $true }
+            catch{ $key.Close() }
         }
-        # 回读验证
-        $chk = reg.exe query "$rp" /ve 2>&1 | Out-String
-        if($chk -match 'iexplore'){ $fixed++; W "  [OK] $rp" }
-        else { W "  [失败] $rp 回读=$($chk.Trim())" }
-    }catch{ W "  [异常] $rp -> $($_.Exception.Message)" }
+        # denied -> take ownership then grant then write
+        $ko=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::TakeOwnership)
+        if($null -eq $ko){ W "    cannot open for ownership: $sub"; return $false }
+        $acl=$ko.GetAccessControl([System.Security.AccessControl.AccessControlSections]::None); $acl.SetOwner($adminSid); $ko.SetAccessControl($acl); $ko.Close()
+        $k2=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
+        $a2=$k2.GetAccessControl(); $rule=New-Object System.Security.AccessControl.RegistryAccessRule($adminSid,[System.Security.AccessControl.RegistryRights]::FullControl,"None","None","Allow"); $a2.AddAccessRule($rule); $k2.SetAccessControl($a2); $k2.Close()
+        $k3=$rk.OpenSubKey($sub,$true); $k3.SetValue("",$val,[Microsoft.Win32.RegistryValueKind]::String); $k3.Close()
+        return $true
+    }catch{ W "    set failed $sub -> $($_.Exception.Message)"; return $false }
+    finally{ $rk.Close() }
 }
-W "  4个键修复: $fixed/4  $(OK ($fixed -eq 4))"
+
+$fixed=0
+foreach($sub in $physical){
+    $ok = Set-IECom $sub $iexploreValue
+    # verify
+    $rk=[Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,[Microsoft.Win32.RegistryView]::Registry64)
+    $v=$null
+    try{ $kk=$rk.OpenSubKey($sub); if($kk){ $v=$kk.GetValue(""); $kk.Close() } }catch{}
+    $rk.Close()
+    if($v -match 'iexplore'){ $fixed++; W "  [OK] HKLM\$sub" }
+    else { W "  [FAIL] HKLM\$sub  value=$v" }
+}
+W "  keys fixed: $fixed/2  $(OK ($fixed -eq 2))"
 Flush
 
-# ============ 步骤2: IE 模式策略 + 站点列表 ============
+# ============ STEP 2: IE mode policy + site list ============
 W ""
-W "【步骤2】配置 Edge IE 模式策略 + 站点列表"
+W "[STEP 2] Configure Edge IE mode policy + site list"
 $xmlPath="C:\ProgramData\EdgeIEMode\sitelist.xml"
 $xmlDir=Split-Path $xmlPath
 if(-not(Test-Path $xmlDir)){ New-Item -ItemType Directory -Path $xmlDir -Force | Out-Null }
-$xml=@'
-<site-list version="206">
-  <site url="ebsprod.bytedance.net:8000" allow-redirect="true">
-    <compat-mode>IE7Enterprise</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="ebsprod.bytedance.net" allow-redirect="true">
-    <compat-mode>IE7Enterprise</compat-mode>
-    <open-in>IE11</open-in>
-  </site>
-  <site url="sso.bytedance.com"><open-in>None</open-in></site>
-  <site url="login.bytedance.com"><open-in>None</open-in></site>
-</site-list>
-'@
+# build XML by string concat (no here-string, avoids newline/encoding pitfalls)
+$nl=[Environment]::NewLine
+$xml = '<site-list version="207">' + $nl
+$xml += '  <site url="ebsprod.bytedance.net:8000" allow-redirect="true"><compat-mode>IE7Enterprise</compat-mode><open-in>IE11</open-in></site>' + $nl
+$xml += '  <site url="ebsprod.bytedance.net" allow-redirect="true"><compat-mode>IE7Enterprise</compat-mode><open-in>IE11</open-in></site>' + $nl
+$xml += '  <site url="sso.bytedance.com"><open-in>None</open-in></site>' + $nl
+$xml += '  <site url="login.bytedance.com"><open-in>None</open-in></site>' + $nl
+$xml += '</site-list>'
 [System.IO.File]::WriteAllText($xmlPath,$xml,(New-Object System.Text.UTF8Encoding($false)))
 $key="HKLM:\SOFTWARE\Policies\Microsoft\Edge"
 if(-not(Test-Path $key)){ New-Item -Path $key -Force | Out-Null }
 New-ItemProperty -Path $key -Name "InternetExplorerIntegrationLevel" -Value 1 -PropertyType DWord -Force | Out-Null
 New-ItemProperty -Path $key -Name "InternetExplorerIntegrationSiteList" -Value ("file:///"+($xmlPath -replace '\\','/')) -PropertyType String -Force | Out-Null
 $lv=(Get-ItemProperty $key -Name InternetExplorerIntegrationLevel).InternetExplorerIntegrationLevel
-W "  IE模式策略=1: $(OK ($lv -eq 1)) ; 站点列表已写: $(OK (Test-Path $xmlPath))"
+W "  IE mode policy=1: $(OK ($lv -eq 1)) ; site list written: $(OK (Test-Path $xmlPath))"
 Flush
 
-# ============ 步骤3: 装登录自动清残留 iexplore 任务 ============
+# ============ STEP 3: logon auto-clean task ============
 W ""
-W "【步骤3】安装登录自动清理任务(解决 Edge149 退出崩溃残留)"
+W "[STEP 3] Install logon auto-clean task (for Edge149 exit-crash residue)"
 $taskName="ClearStaleIExplore"
 $cmd='Get-Process iexplore -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue'
 $enc=[Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($cmd))
 schtasks /Delete /TN $taskName /F 2>$null | Out-Null
 $action="powershell.exe -NoProfile -WindowStyle Hidden -EncodedCommand $enc"
-$cr=schtasks /Create /TN $taskName /TR $action /SC ONLOGON /RL HIGHEST /F 2>&1
+schtasks /Create /TN $taskName /TR $action /SC ONLOGON /RL HIGHEST /F 2>&1 | Out-Null
 $taskOk = ($LASTEXITCODE -eq 0)
-W "  计划任务 '$taskName': $(OK $taskOk)"
+W "  task '$taskName': $(OK $taskOk)"
 Flush
 
-# ============ 步骤4: 清当前残留 ============
+# ============ STEP 4: clear current residue ============
 W ""
-W "【步骤4】清理当前残留 iexplore"
-$ie=@(Get-Process iexplore -EA SilentlyContinue)
-W "  当前 iexplore 数: $($ie.Count),清理中..."
-$ie | ForEach-Object { try{ Stop-Process -Id $_.Id -Force }catch{} }
+W "[STEP 4] Clear current stale iexplore"
+$ieList=@(Get-Process iexplore -ErrorAction SilentlyContinue)
+W "  current iexplore count: $($ieList.Count), clearing..."
+foreach($p in $ieList){ try{ Stop-Process -Id $p.Id -Force -ErrorAction Stop }catch{} }
+Flush
 
-# ============ 步骤5: 实测验证(真的能不能创建 IE) ============
+# ============ STEP 5: live test (create IE COM) ============
 W ""
-W "【步骤5】实测:尝试创建 IE COM 对象(验证是否真能用)"
-$comOk=$false; $comErr=""
+W "[STEP 5] Live test: create IE COM object"
+$comOk=$false
 try{
-    $ieTest=New-Object -ComObject InternetExplorer.Application -EA Stop
-    $comOk=$true
-    W "  [OK] IE COM 创建成功 —— IE 模式底层可用!"
-    try{ $ieTest.Quit(); [System.Runtime.InteropServices.Marshal]::ReleaseComObject($ieTest)|Out-Null }catch{}
+    $ieTest=New-Object -ComObject InternetExplorer.Application -ErrorAction Stop
+    if($ieTest){
+        $comOk=$true
+        W "  [OK] IE COM created - IE mode engine works!"
+        try{ $ieTest.Quit(); [System.Runtime.InteropServices.Marshal]::ReleaseComObject($ieTest)|Out-Null }catch{}
+    }
 }catch{
-    $comErr=$_.Exception.Message
-    $hr=$_.Exception.HResult; if($_.Exception.InnerException){ $hr=$_.Exception.InnerException.HResult }
-    W "  [失败] IE COM 创建失败: 0x$('{0:X8}' -f ($hr -band 0xFFFFFFFF))"
-    W "         $comErr"
+    $hr=$_.Exception.HResult
+    if($_.Exception.InnerException){ $hr=$_.Exception.InnerException.HResult }
+    W ("  [FAIL] IE COM create failed: 0x{0:X8}" -f ($hr -band 0xFFFFFFFF))
+    W ("         {0}" -f $_.Exception.Message)
 }
 Start-Sleep -Seconds 5
-# 如果失败,抓最近一次 iexplore 崩溃信息
+
+# if failed, grab latest iexplore crash (foreach, no nested pipelines)
 if(-not $comOk){
-    W "  -- 最近 iexplore 崩溃 (WER 1001) --"
+    W "  -- recent iexplore crash (WER 1000/1001) --"
     try{
-        Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000,1001; StartTime=(Get-Date).AddMinutes(-3)} -EA SilentlyContinue |
-            Where-Object{ $_.Message -match 'iexplore' } | Select-Object -First 2 | ForEach-Object {
-                ($_.Message -split "`n") | Where-Object{ $_ -match 'iexplore|dual_engine|mshtml|c0000005|P4|故障模块|异常代码' } |
-                    Select-Object -First 6 | ForEach-Object { W "    | $($_.Trim())" }
-                W "    ----"
-            }
-    }catch{ W "    (读取崩溃日志失败: $_)" }
-    # 检查崩溃 dump
+        $events = Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000,1001; StartTime=(Get-Date).AddMinutes(-3)} -ErrorAction SilentlyContinue
+        $ieEvents = @($events | Where-Object { $_.Message -match 'iexplore' } | Select-Object -First 2)
+        foreach($ev in $ieEvents){
+            $lines = $ev.Message -split "`r?`n"
+            $hit = @($lines | Where-Object { $_ -match 'iexplore|dual_engine|mshtml|c0000005|P4' } | Select-Object -First 6)
+            foreach($line in $hit){ W ("    | {0}" -f $line.Trim()) }
+            W "    ----"
+        }
+    }catch{ W ("    (read crash log failed: {0})" -f $_.Exception.Message) }
     if(Test-Path "C:\IEDumps"){
-        $d=@(Get-ChildItem "C:\IEDumps" -Filter *.dmp -EA SilentlyContinue | Sort-Object LastWriteTime -Descending)
-        if($d.Count){ W "    最新崩溃dump: $($d[0].FullName) ($([int]($d[0].Length/1KB))KB)" }
+        $d=@(Get-ChildItem "C:\IEDumps" -Filter *.dmp -ErrorAction SilentlyContinue | Sort-Object LastWriteTime -Descending)
+        if($d.Count){ W ("    latest dump: {0} ({1} KB)" -f $d[0].FullName,[int]($d[0].Length/1KB)) }
     }
 }
 Flush
 
-# ============ 总结 ============
+# ============ summary ============
 W ""
 W "================================================"
-W "配置完成。总结:"
-W "  步骤1 修注册表 : $(OK ($fixed -eq 4))"
-W "  步骤2 IE模式策略: $(OK ($lv -eq 1))"
-W "  步骤3 自动清理  : $(OK $taskOk)"
-W "  步骤5 IE实测    : $(OK $comOk)"
+W "Setup done. Summary:"
+W "  STEP1 registry  : $(OK ($fixed -eq 2))"
+W "  STEP2 IE policy : $(OK ($lv -eq 1))"
+W "  STEP3 autoclean : $(OK $taskOk)"
+W "  STEP5 IE test   : $(OK $comOk)"
 if(-not $comOk){
     W ""
-    W "  !! 实测未通过。注意:此脚本刚运行,IE模式策略需【重启电脑】后才完全生效。"
-    W "     请重启后用 open_ebs.ps1 打开 EBS 测试;若仍失败,把 setup_ebs_log.txt 发回。"
+    W "  !! Live test not passed. NOTE: IE mode policy needs a REBOOT to fully apply."
+    W "     After reboot, open EBS with open_ebs.ps1. If still failing, send setup_ebs_log.txt back."
 }
 W ""
-W "【日常使用】以后打开 EBS,运行:"
+W "[Daily use] To open EBS, run:"
 W "    powershell -ExecutionPolicy Bypass -File .\open_ebs.ps1"
-W "  或正常用 Edge 打开 http://ebsprod.bytedance.net:8000 (自动切IE模式)"
+W "  or just open Edge to http://ebsprod.bytedance.net:8000 (auto IE mode)"
 W ""
-W "【若又报错】关掉所有 Edge,任务管理器结束所有 iexplore,再重开。"
-W "【根因】Edge 149 的 dual_engine_adapter 退出时崩溃留残留,微软后续版本会修。"
+W "[If error again] Close ALL Edge, end all iexplore in Task Manager, reopen."
+W "[Root cause] Edge 149 dual_engine_adapter crashes on iexplore exit; MS will fix in a later version."
 Flush
 Write-Host ""
-Write-Host "日志: $Out" -ForegroundColor Green
-Read-Host "按回车关闭"
+Write-Host "Log: $Out" -ForegroundColor Green
+Read-Host "Press Enter to close"

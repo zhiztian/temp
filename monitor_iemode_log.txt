@@ -8,3 +8,10 @@ Tip: use EBS normally during this; note when it breaks vs the log timeline.
 [20:49:01] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=0 iexplore=10
 [20:49:32] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=14
 [20:50:02] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=14
+[20:50:32] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=16
+[20:51:03] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=18
+[20:51:33] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=20
+[20:52:04] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=22
+[20:52:34] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=24
+[20:53:04] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=26
+[20:53:35] COM=iexplore-OK policy=1 IEtest=FAIL_0x80080005 msedge=10 iexplore=28

@@ -1,0 +1,38 @@
+﻿Purge 360/Qihoo leftovers  2026-06-09 20:55:21
+Mode: KILL + REMOVE autoruns/tasks + DELETE files
+================================================
+
+[1] Kill 360 processes
+  none running
+
+[2] Remove Run autostart entries
+
+[3] Scheduled tasks
+  none
+
+[4] Services
+  none
+
+[5] Leftover 360 directories
+  EXISTS: C:\Users\admin\AppData\Roaming\360huabao
+    deleted
+  EXISTS: C:\Users\admin\AppData\Roaming\360se6
+    deleted
+  EXISTS: C:\Users\admin\AppData\Roaming\360safe
+    deleted
+  EXISTS: C:\Program Files (x86)\360
+    deleted
+  EXISTS: C:\360Downloads
+    deleted
+
+[6] Re-check IE COM registration (360 may have re-hijacked it)
+  "C:\Program Files\Internet Explorer\iexplore.exe"   (ok)
+  "C:\Program Files\Internet Explorer\iexplore.exe"   (ok)
+
+================================================
+Done. Remaining 360 processes:
+  0
+
+If files still exist, re-run with -DeleteFiles.
+Then REBOOT and test EBS with open_ebs.ps1.
+

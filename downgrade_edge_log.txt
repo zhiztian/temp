@@ -1,4 +1,4 @@
-﻿Downgrade Edge -> 148.0.3967.109  2026-06-09 19:40:26
+﻿Downgrade Edge -> 148.0.3967.109  2026-06-09 19:47:05
 Machine: DESKTOP-2BJ6P4J  User: admin
 ================================================
 Current Edge: 149.0.4022.52  ->  target: 148.0.3967.109
@@ -7,25 +7,25 @@ Current Edge: 149.0.4022.52  ->  target: 148.0.3967.109
   downloaded: C:\Users\admin\AppData\Local\Temp\MicrosoftEdgeEnterpriseX64_148.msi (190 MB)
   SHA256 match: [OK]
 
-[STEP 2] Lock Edge updates (pin to 148, block auto-update)
+[STEP 2] Install 148.0.3967.109 (downgrade)
+  msiexec exit code: 0  [OK]
+
+[STEP 3] Verify version
+  Edge version now: 148.0.3967.109  [OK]
+
+[STEP 4] Lock Edge updates (only if downgrade succeeded)
   UpdateDefault=0, TargetVersionPrefixStable=148.  [OK]
   firewall block updater: [OK]
-
-[STEP 3] Install 148.0.3967.109 (downgrade)
-  msiexec exit code: 1603  [FAIL]
-
-[STEP 4] Verify
-  Edge version now: 149.0.4022.52  [FAIL]
 
 ================================================
 Summary:
   download+verify : [OK]
-  install 148     : [FAIL]
-  version is 148  : [FAIL]
+  install 148     : [OK]
+  version is 148  : [OK]
   updates locked  : pinned to 148.x + updater blocked
 
-  !! version not 148. Check msiexec exit code above. May need manual install of:
-     C:\Users\admin\AppData\Local\Temp\MicrosoftEdgeEnterpriseX64_148.msi
+  NEXT: reboot, then run open_ebs.ps1 and test the finance form.
+  (IE COM registry + IE mode policy were already configured by setup_ebs.ps1)
 
   To later re-allow updates (go back to newest Edge):
     reg delete HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate /v UpdateDefault /f

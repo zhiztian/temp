@@ -1,0 +1,40 @@
+﻿IE engine launch diagnostic  2026-06-09 14:58:43
+Machine: DESKTOP-2BJ6P4J  User: admin
+Target: http://ebsprod.bytedance.net:8000/OA_HTML/OA.jsp?OAFunc=OANEWHOMEPAGE
+
+==== Method1: COM [InternetExplorer.Application] ====
+COM [InternetExplorer.Application] failed: 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+  HResult: 0xFFFFFFFF80080005
+
+==== Method1: COM [InternetExplorerMedium] ====
+COM [InternetExplorerMedium] failed: 检索 COM 类工厂中 CLSID 为 {00000000-0000-0000-0000-000000000000} 的组件失败，原因是出现以下错误: 80040154 没有注册类 (异常来自 HRESULT:0x80040154 (REGDB_E_CLASSNOTREG))。
+  HResult: 0xFFFFFFFF80040154
+
+---- iexplore / msedge process snapshot ----
+  iexplore : 0
+  msedge : 8
+      PID=1756 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=6156 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=11308 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=17824 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=18520 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=22096 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=22328 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+      PID=26604 Path=C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+
+==== Method2: direct iexplore.exe ====
+  iexplore proc (before->after): 0 -> 0
+  msedge   proc (before->after): 8 -> 10
+  >> msedge proc increased = redirected to Edge (IE not started)
+
+==== Env: IE->Edge redirection registry (read only) ====
+  HKLM:\SOFTWARE\Microsoft\Internet Explorer\Main\RedirectionMode = (no value)
+  HKCU:\SOFTWARE\Microsoft\Internet Explorer\Main\RedirectionMode = (no value)
+  HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main (key not found)
+  HKLM:\SOFTWARE\Policies\Microsoft\Edge\InternetExplorerIntegrationLevel = (no value)
+  HKCU:\SOFTWARE\Policies\Microsoft\Edge (key not found)
+
+==== Verdict ====
+  - any 'real IE engine loaded EBS' or 'iexplore proc increased' -> works, next clear cookie + login + open finance form
+  - all hijacked to msedge / DisableInternetExplorerApp=1 -> local IE-engine path exhausted, need IT to enable Edge IE mode
+

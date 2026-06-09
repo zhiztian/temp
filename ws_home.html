@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover,user-scalable=no,shrink-to-fit=no" />
+  <title>ByteDance SSO</title>
+  <meta name="title" content="ByteDance SSO">
+  <meta name="description" content="字节跳动统一登录平台">
+  
+  <link rel="icon" href="//goofy-cdn-tos.bytedance.net/system/platform/sso_fe/favicon.ico">
+  <link rel="preconnect" href="https://goofy-cdn-tos.bytedance.net/" />
+  <link rel="dns-prefetch" href="https://goofy-cdn-tos.bytedance.net/" />
+  <link rel="dns-prefetch" href="https://lf3-static.bytednsdoc.com/" />
+  <link href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/css/semi.min.css" rel="stylesheet" />
+	<link href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/fonts/inter.css" rel="stylesheet" />
+	<link href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_fe/1.0.0.171/index.css" rel="stylesheet" />
+	
+  <link rel="preload" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/fonts/Inter-Medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/sso/banner-logo.svg">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/sso/login-bg.webp">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/branding/icon/lark.svg">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/branding/icon/google.svg">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_fe/1.0.0.171/images/icp.png">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/branding/semi/CustomerSupport.svg">
+  <link rel="preload" as="image" href="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/images/sso/logo-color.svg">
+  <style>
+    .semi-form-field-error-message {
+      line-height: 12px;
+      top: 43px;
+    }
+    .semi-select-content-wrapper {
+      max-width: 162px;
+    }
+    body {
+      background-color: #fff
+    }
+    .mobile-sso.main {
+       
+      min-height: -webkit-fill-available !important;
+    }
+    .mobile-sso.main .center {
+      height: -webkit-fill-available !important;
+      min-height: -webkit-fill-available !important;
+    }
+    .mobile-sso.main .content {
+      height: -webkit-fill-available !important;
+      min-height: -webkit-fill-available !important;
+    }
+  </style>
+  <script>window.__assetPrefix__ = "https://\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_fe\/1.0.0.171/";</script>
+<script>
+window.SSOPageConfig = (function () {
+  var appIdMatch = (window.location.search || '').match(/[?&]app_id=([^&]+)/i) || [];
+
+  return {
+    theme_id: "ld1itmo4r2iycy231bam" || null,
+    theme_name: "内网模版（所有模版都不能主动点击删除）".replace("（所有模版都不能主动点击删除）", "") || null,
+    app_id: appIdMatch[1] || null
+  }
+})();
+</script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script>
+;(function (w, d, u, b, n, pc, ga, ae, po, s, p, e, t, pp) {pc = 'precollect';ga
+= 'getAttribute';ae = 'addEventListener';po = 'PerformanceObserver';s = function
+(m) {p = [].slice.call(arguments);p.push(Date.now(), location.href);(m == pc ?
+s.p.a : s.q).push(p)};s.q = [];s.p = { a: [] };w[n] = s;e =
+document.createElement('script');e.src = u + '?bid=' + b + '&globalName=' +
+n;e.crossOrigin = u.indexOf('sdk-web') > 0 ? 'anonymous' :
+'use-credentials';d.getElementsByTagName('head')[0].appendChild(e);if (ae in w)
+{s.pcErr = function (e) {e = e || w.event;t = e.target || e.srcElement;if (t
+instanceof Element || t instanceof HTMLElement) {if (t[ga]('integrity'))
+{w[n](pc, 'sri', t[ga]('href') || t[ga]('src'))} else {w[n](pc, 'st', { tagName:
+t.tagName, url: t[ga]('href') || t[ga]('src') })}} else {w[n](pc, 'err', e.error)}};s.pcRej = function (e) {e = e || w.event;w[n](pc, 'reject',
+e.reason || (e.detail && e.detail.reason))};w[ae]('error', s.pcErr,
+true);w[ae]('unhandledrejection', s.pcRej,
+true);};if('PerformanceLongTaskTiming' in w) {pp = s.pp = { entries: []
+};pp.observer = new PerformanceObserver(function (l) {pp.entries =
+pp.entries.concat(l.getEntries())});pp.observer.observe({ entryTypes:
+['longtask', 'largest-contentful-paint','layout-shift']
+})}})(window,document,'https://lf3-short.ibytedapm.com/slardar/fe/sdk-web/browser.cn.js', 'sso_fe_web', 'NewSlardar');
+</script>
+  <script>
+(function (window, NewSlardar) {
+  if (!NewSlardar) {
+    return;
+  }
+  if (window.SSOPageConfig) {
+    NewSlardar('context.merge', {
+      theme_id: window.SSOPageConfig.theme_id || 'unknown',
+      theme_name: window.SSOPageConfig.theme_name || 'unknown',
+      sso_app_id: window.SSOPageConfig.app_id || 'NONE',
+    })
+  }
+  if (window.isIframe && __BRANDING_ancestorOrigins) {
+    try {
+      var iframeParams = {
+        ancestorOrigins: __BRANDING_ancestorOrigins,
+      }
+      NewSlardar('context.merge', iframeParams);
+    } catch (e) {
+      console.log('属性不兼容: ', e);
+    }
+  }
+  NewSlardar('init', {
+    bid: 'sso_fe_web',
+    env: 'production' + (window.__isMobile__ ? '_h5' : ''),
+    plugins: {
+      ajax: {
+        extraExtractor: extraExtractor
+      },
+      fetch: {
+        extraExtractor: extraExtractor
+      },
+      resource: {
+        ignoreUrls: [/.net/, /.org/],
+        
+      }
+    }
+  });
+  NewSlardar('on', 'beforeSend', onBeforeSend);
+  NewSlardar('start');
+
+  function onBeforeSend(e) {
+    if (e && e.common && e.common.pid) {
+      var pid = e.common.pid;
+      switch (pid) {
+        case '/':
+        case '/welcome':
+        case '/user/login':
+        case '/user/login_old':
+        case '/bytestyle':
+        case '/applications':
+          return e;
+        default:
+          if (
+            pid.indexOf('/security/') > -1 ||
+            pid.indexOf('/account/') > -1 ||
+            pid.indexOf('/authority/') > -1 ||
+            pid.indexOf('/app/') > -1
+          ) {
+            return e;
+          }
+          return false;
+      }
+    }
+    return e;
+  }
+
+  function extraExtractor(body, payload) {
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        return false
+      }
+    }
+    if (body && body.error_code) {
+      var extra = {};
+      for (var key in body) {
+        extra[key] = String(body[key]);
+      }
+      return extra;
+    }
+    return false
+  }
+})(window, window.NewSlardar);
+  </script>
+
+  
+  <script crossorigin="anonymous" src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/js/polyfill.min.js"></script>
+	<script crossorigin="anonymous" src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/js/react.production.min.js"></script>
+  <script crossorigin="anonymous" src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/js/react-dom.production.min.js"></script>
+  <script crossorigin="anonymous" src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/js/url-polyfill.min.js" id="url-polyfill"></script>
+  <script crossorigin="anonymous" src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_libs/js/semi-ui.min.js"></script>
+  
+	<script src="//goofy-cdn-tos.bytedance.net/system/platform/ngid_fe/1.0.0.171/index.js"></script>
+	
+
+  <script>
+    var pageError = null;
+    var notice = null;
+    var preset = WebAuth.preset;
+
+    var ua = navigator.userAgent.toLowerCase(); 
+    var isSSOTest = /ssomobiletest/.test(ua);   
+    var isInLark = /lark/.test(ua) || /feishu/.test(ua); 
+    var isElectron = /electron/.test(ua);       
+    var isCorplink = /corplink/.test(ua);       
+
+    var reAuth = preset.reAuth({
+      defaultValue: {
+        showPasskeyDoc: true,
+        title: function (t) {
+          return t('logo', {}, 'ByteDance SSO');
+        },
+        passkey: {
+          autofill: !isInLark && !isElectron && !isSSOTest
+        },
+        passkeyDomains: [
+          'sso.bytedance.com'
+        ],
+        oncall: 'https://applink.feishu.cn/client/helpdesk/open?id=6966786887591755779&extra=%7B%22channel%22%3A1%2C%22created_at%22%3A1626865729%7D',
+      }
+    });
+    var _default = reAuth.defaultValue;         
+    var handleGoogle = reAuth.handleGoogle;     
+
+    preset.handlePagePreset();                  
+
+    var __BRANDING_DEVICE__        = null;     
+    var __BRANDING_CURRENT_FA__    = null;     
+    var __BRANDING_IS_OPEN_FIDO__  = false;    
+    var __BRANDING_SSO_USER__      = null;     
+    var __BRANDING_ancestorOrigins = null;     
+
+    try {
+      __BRANDING_ancestorOrigins = document.location.ancestorOrigins[0];
+    } catch (e) {
+      console.log('ancestorOrigins error: ', e);
+      __BRANDING_ancestorOrigins = null; 
+    }
+
+    var isIframe = window.self !== window.top; 
+    var idps = [
+      {
+        idp: 'passkey',
+        logo: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/sso/passkey.jpeg'
+      },
+      {
+        logo: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/branding/icon/sso.svg',
+        idp: 'sso_split',
+      },
+      {
+        idp: 'lark',
+        logo: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/branding/icon/lark.svg',
+      },
+      {
+        idp: 'google',
+        logo: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/branding/icon/google.svg',
+        data: function (t) {
+          return [{
+              label: t('FyyuZGDTKo', {}, '通过 bytedance.com 账号登录'),
+              url: 'bytedance.com'
+            },
+            {
+              label: t('p7oGIxx6hB', {}, '通过 tiktokusds.com 账号登录'),
+              url: 'tiktokusds.com'
+            },
+          ];
+        }
+      },
+    ];
+
+
+    if (isElectron || isCorplink) {
+      idps = idps.filter(function(idp) {
+        return idp.idp !== 'passkey';
+      });
+    }
+    var iframeConfig = preset.iframeLogin({
+      idps: idps,
+    });
+
+    var __BRANDING_IDP__ = iframeConfig.idps;
+    var iframeInterceptorSuccessCallback = iframeConfig.iframeInterceptorSuccessCallback;  
+    var loginInterceptor = iframeConfig.loginInterceptor;                                  
+    var handleLoginInIframe = iframeConfig.handleLoginInIframe;                            
+
+
+    var wa = new WebAuth.SSOAuth({
+      type: 'split',
+      form: {
+        title: function (t) {
+          return {
+            title: t('pdd4S0Dmw5', {}, '登录'),
+          }
+        },
+        scene: 'login',
+      },
+      default: _default,
+      plugins: [
+        new WebAuth.BeforeEnterPlugin({
+          handle: function(user, type) {
+            if (window.collectEvent && window.SSOPageConfig && user) {
+              window.collectEvent('login_success_uv', {
+                appid: window.SSOPageConfig.app_id,
+                url: location.href,
+                user: user.email,
+                type: type
+              });
+            }
+          }
+        }),
+        new WebAuth.PreDetectionPlugin(),
+        new WebAuth.LarkFlowPlugin({ enabled: window.__isMobile__ }),
+        new WebAuth.PasskeyRecommendFlowPlugin({
+          enabled: !isSSOTest && !isInLark && !isElectron && !isCorplink
+        }),
+        !isSSOTest && !isInLark && !isElectron && !window.isIframe && !window.__isMobile__ ? new WebAuth.PasskeyTipFlowPlugin() : null,
+        
+        
+        
+        
+        
+        
+        
+      ].filter(function(item) {
+        return item;
+      }),
+      debug: true,
+      type: 'split',
+      fetcher: {
+        printLog: true,
+        options: {
+          'credentials': 'include',
+          headers: isIframe ? {
+            'sso-fetch-env': 'iframe',
+          } : {
+          }
+        },
+        onSuccess: iframeInterceptorSuccessCallback,
+        handleError: function(err, res, addLogId2Error) {
+          if (res && res.status === 500) {
+            return addLogId2Error(err, res);
+          }
+          return err;
+        } 
+      },
+      interceptor: {
+        params: loginInterceptor
+      },
+      settings: {
+        login: {
+          suffix: [
+            '@bytedance.com',
+            '@ad.bytedance.com',
+            '@jiyunhudong.com',
+            '@imaginechina.com',
+            '@sso-service-account.bytedance.net'
+          ]
+        },
+        label: {
+          allow: [
+            'feishu.cn',
+            'bytedance.com',
+            'bytedance.net',
+            'larkoffice.com'
+          ]
+        }
+      },
+      oncall: {
+        icon: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/branding/semi/CustomerSupport.svg',
+      	onClick: function() {
+        	window.open(_default.oncall);
+        }
+      },
+      idp: __BRANDING_IDP__
+    });
+
+    wa.website({
+      mobile: {
+        src: 'https://lf3-static.bytednsdoc.com/obj/eden-cn/pozuldnuvk/byteDance.png',
+      },
+      pc: {
+        src: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/sso/logo-color.svg'
+      }
+    });
+
+    handleGoogle(wa);         
+    
+
+
+    wa.banner(function (t) {
+      return {
+        url: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/sso/login-bg.webp',
+        logo: '\/\/goofy-cdn-tos.bytedance.net\/system\/platform\/ngid_libs/images/sso/banner-logo.svg',
+        title: t('logo', {}, '字节跳动统一登录平台'),
+        description: t('AFfeyTENwf', {}, '我们将始终为您提供安全可靠的身份认证和授权服务'),
+        mask: true
+      }
+    });
+    wa.language({
+      locale: {
+        'zh-CN': {
+          logo: '字节跳动统一登录平台',
+          wPFna14mecb43Rf7cRhtO3Rs6XiHNMH4: '解锁账号',
+          df9y6J9aO8: '{year}字节跳动统一登录平台',
+          iframeNotice: '检测到当前为 Iframe 环境，由于三方 Cookie 限制，需要重新登录 ByteDance SSO',
+          add_passkey: '添加通行密钥',
+          'notice_link_constant': 'SSO 现已支持通行密钥一键安全登录！告别繁琐密码和 MFA，使用生物识别/设备PIN快速验证，快按照文档试试吧: ',
+          passkey_recommand_btn: 'SSO开启通行密钥用户手册',
+          passkey_recommand_link: 'https://bytedance.us.larkoffice.com/docx/doxus1wsemosGqroI05VOI1p0kf',
+          sso_fallback: '为了应对公司 0917 LF 容灾演练，SSO 预计在 9 月 17 日 00:00-08:00 进行变更验证，理论上无影响，如有影响，请联系 SSO Oncall 处理',
+        },
+        'en-US': {
+          AFfeyTENwf: 'We will provide you with secure and reliable authentication and authorization related services',
+          logo: 'ByteDance SSO',
+          df9y6J9aO8: '{year} ByteDance SSO',
+          FyyuZGDTKo: 'Login via bytedance.com',
+          p7oGIxx6hB: 'Login via tiktokusds.com',
+          wPFna14mecb43Rf7cRhtO3Rs6XiHNMH4: 'to retrieve account',
+          fido2_passkey_desc: 'Use Passkey for authentication',
+          iframeNotice: 'Detected current environment as an Iframe. Due to third-party cookie restrictions, ByteDance SSO requires reauthentication.',
+          add_passkey: 'Add Passkey',
+          'notice_link_constant': 'Passkey Login Now Live on ByteDance SSO! Experience password-free security with biometrics/device PIN. Register to unlock faster access: ',
+          passkey_recommand_btn: 'SSO Passkey User Manual',
+          passkey_recommand_link: 'https://bytedance.us.larkoffice.com/docx/VNr2dArtNoG9W3xoOADum7DYsGb',
+          sso_fallback: "In order to cope with the company's 0917 disaster recovery drill, SSO is expected to conduct change verification from 00:00 to 08:00 on Sep 17. Theoretically, there will be no impact. If there is any impact, please contact SSO Oncall for processing.",
+        },
+      },
+    });
+
+    wa.copyRight(function (t) {
+      return {
+        label: t('df9y6J9aO8', {
+          year: window.__dayjs__().year()
+        }, '{year}字节跳动统一登录平台'),
+      };
+    });
+
+    if (typeof window !== 'undefined') {
+      window.__BRANDING_SSO_USER__ = window.__storage__.get('username');
+    }
+
+    var collects = preset.collect(wa); 
+    collects.collectFIDOUseage();      
+    collects.collectIDPUse();          
+    collects.collectSSODevice([        
+      'https://fex-team.github.io/ua-device/js/useragent-base.js',
+      'https://fex-team.github.io/ua-device/js/ua-device.js'
+    ], 2000);
+    
+    
+    preset.openDebugger('https://unpkg.byted-static.com/eruda/2.3.3/eruda.js'); 
+
+    
+    preset.setMFA(wa);          
+    
+    preset.renderEnvTag(SemiUI.Tag, { class: 'env-tag', label: 'CN' }); 
+    preset.handleApp({                 
+      __BRANDING_APP__: {
+        hack: /aweme/.test(ua) || /musical_ly/.test(ua) || isSSOTest,
+        
+        disabledLoad: false,
+        openSchema: isSSOTest,
+      },
+      url: 'https://unpkg.byted-static.com/bridge/aweme/1.4.0/lib/aweme.umd.js',
+      pre: function() {
+        var scode = window.__event__.getURIParam('scode');
+        var next = window.__event__.getURIParam('next') || '/';
+        if (scode) {
+          setTimeout(function() {
+            location.href = next;
+          }, 1000);
+          return false;
+        }
+        return true;
+      }
+    }, wa);
+
+    preset.handleFeelgood(wa, { 
+      url: 'https://unpkg.byted-static.com/ad/feelgood-sdk/0.11.30-polyfill/dist/feelgood-web-sdk.umd.js',
+      debug: true,
+      user: function(id) {
+        return {
+          user_id: id,
+          user_name: id,
+          user_lang: window.__storage__.get('NGID_LOCALE') || (navigator.language.indexOf('zh') > -1 ? 'zh-CN' : 'en-US')
+        };
+      },
+      initOptions: {
+        appKey: 'd51c50d86d802ec3d6eed3b21e42c70b5a2b71bd',
+        channel: 'cn',
+      }
+    });  
+
+    wa.catch(pageError);
+
+    wa.emitter.on('effect:container', function(plugin) {
+      window.__BRANDING_NOTICE__ = plugin.notice;
+    })
+    
+    wa.init();
+
+    function handleIframe() {
+      if (isIframe && window.__event__ && window.SSOPageConfig) {
+        try {
+          var next = window.__event__.getURIParam('next') || window.__event__.getURIParam('redirect_uri');
+          if (next && __BRANDING_ancestorOrigins && window.collectEvent) {
+            setTimeout(function() {
+              window.collectEvent('iframe_collect', { origin: __BRANDING_ancestorOrigins, extra: window.SSOPageConfig.app_id, location: window.location.href });
+            }, 2000);
+          }
+        } catch (e) {
+          console.log('collect error');
+        }
+      }
+    }
+
+    wa.emitter.on('event:verify', function(err, factor, scene, setError) {
+      var options = {
+        factor: factor,
+        scene: scene,
+      };
+      if (window.SSOPageConfig && window.SSOPageConfig.app_id) {
+        options.appid = window.SSOPageConfig.app_id;
+      }
+      if (err) {
+        var reason = window.__event__.handleError(err);
+        options.error = reason;
+        if (isIframe && __BRANDING_ancestorOrigins) {
+          options.ancestorOrigins = __BRANDING_ancestorOrigins;
+        }
+        window.collectEvent('universal_collect', {
+          event: 'factor_verify',
+          type: 'event',
+          inIframe: isIframe,
+          options: JSON.stringify(options)
+        });
+        setError(reason);
+        return;
+      }
+      options.type = 'success';
+      window.collectEvent('universal_collect', {
+          event: 'factor_verify',
+          type: 'event',
+          inIframe: isIframe,
+          options: JSON.stringify(options)
+        });
+    });
+
+    handleIframe();
+    
+  </script>
+  <script>
+    (function (win, export_obj) {
+      win["LogAnalyticsObject"] = export_obj;
+      if (!win[export_obj]) {
+        function _collect() {
+          _collect.q.push(arguments);
+        }
+        _collect.q = _collect.q || [];
+        win[export_obj] = _collect;
+      }
+      win[export_obj].l = +new Date();
+    })(window, "collectEvent");
+  </script>
+  
+  <script async src="https://lf6-cdn-tos.bytescm.com/obj/static/log-sdk/collect/5.0/collect.js"></script>
+
+  
+  <script data-sdk-glue-default="init">
+    function isIEfunc() {
+      return window.navigator.userAgent.indexOf('MSIE') >= 1 || (!!window.ActiveXObject || "ActiveXObject" in window);
+    }
+
+    var isIE = isIEfunc();
+
+    if (window.byted_acrawler && !isIE) {
+      window.byted_acrawler.init({
+        aid: 625,
+        isSDK: false,
+        boe: false,
+        enablePathList: [
+          '/api/*',
+          '/dingtalk/check',
+          '/shark'
+        ],
+        region: "cn"
+      })
+    }
+  </script>
+  <script>
+    window.collectEvent("init", {
+      app_id: 2227, 
+      channel: "cn",
+      log: false, 
+    });
+    if (window.SSOPageConfig) {
+      try {
+        var uu = window.__BRANDING_SSO_USER__ ? btoa(window.__BRANDING_SSO_USER__) : '';
+        window.collectEvent("config", {
+          theme_id: window.SSOPageConfig.theme_id || 'unknown',
+          theme_name: window.SSOPageConfig.theme_name || 'unknown',
+          sso_app_id: window.SSOPageConfig.app_id || 'NONE',
+          u: uu
+        });
+      } catch (e) {
+        window.collectEvent("config", {
+          theme_id: window.SSOPageConfig.theme_id || 'unknown',
+          theme_name: window.SSOPageConfig.theme_name || 'unknown',
+          sso_app_id: window.SSOPageConfig.app_id || 'NONE',
+        });
+      }
+    }
+    window.collectEvent("start");
+  </script>
+
+<script id="log">
+  var __BRANDING_LOG_STYLE__ = 'background: #3f51b5; color: #fff; padding: 2px 4px; border-radius: 4px;';
+  console.group('%cTemplate: 内网', __BRANDING_LOG_STYLE__);
+  console.log('%cLast modify: 2026-04-28', __BRANDING_LOG_STYLE__);
+  console.log('%cChangelog: ios 兼容', __BRANDING_LOG_STYLE__);
+  console.log('%cVersion: ' + "1.0.0.171", __BRANDING_LOG_STYLE__);
+  if (window.SSOPageConfig) {
+    console.log('%cAppId: ' + window.SSOPageConfig.app_id, __BRANDING_LOG_STYLE__);
+    console.log('%cThemeId: ' + window.SSOPageConfig.theme_id, __BRANDING_LOG_STYLE__);
+  }
+  console.groupEnd();
+</script>
+
+
+<script id="notice">
+  if (window.wa && window.__BRANDING_NOTICE__) { 
+    
+    window.__BRANDING_NOTICE__({
+      key: '2025-03-19',
+      content: function(t) {
+        return [
+          t('sso_fallback')
+        ];
+      },
+      timerange: [,"2025-09-17 08:00:01"],
+      type: 'banner',
+      position: 'RIGHT_TOP'
+    });
+  }
+</script>
+
+</body>
+
+</html>

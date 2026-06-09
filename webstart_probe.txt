@@ -1,0 +1,26 @@
+EBS Web Start 探测  2026-06-09 14:47:37
+
+==== 0. 本地 javaws ====
+javaws 在
+
+==== 1. 登录(复用本地表单,拿会话) ====
+登录提交结果: 400|http://ebsprod.bytedance.net:8000/OA_HTML/OA.jsp?akRegionApplicationId=0&akRegionCode=FND_TOP_SSO_LOCAL_LOGIN&_FROM_LOGIN=Y
+会话 cookie:
+  
+  JSESSIONID
+
+==== 2. 取主页,找 Forms / Web Start 线索 ====
+主页大小: 22885 字节
+--- 命中关键字 ---
+--- 含 jnlp/frmservlet/forms 的链接 ---
+
+==== 3. 直接探 Forms Servlet 端点 ====
+[/forms/frmservlet?config=webutil] -> 200|text/html
+[/forms/frmservlet] -> 200|text/html
+[/forms/frmservlet?ifcmd=startsession] -> 200|text/html
+[/OA_HTML/frmservlet] -> 200|text/html;charset=ISO8859_1
+
+==== 判定 ====
+若 ws_frmservlet.jnlp 生成 / 第2步有 jnlp 链接 -> 走 Web Start:
+  下载该 jnlp,右键用 javaws.exe 打开即可跑 Forms,绕开浏览器。
+回传: webstart_probe.txt, ws_home.html, ws_login_after.html, *.jnlp(若有)

@@ -1,41 +1,30 @@
 # EBS 登录问题诊断
 
-目标系统：`ebsprod.bytedance.net:8000`
+目标：`ebsprod.bytedance.net:8000`
+报错：`FND_STATE_LOSS_ERROR ... OANavigatePortletAM has already been released`（OAF 会话状态损坏）
 
-报错：`FND_STATE_LOSS_ERROR ... OANavigatePortletAM has already been released`
+WSL 侧解析得到内网 IP `10.8.6.199` 但 TCP 8000 超时（不在字节内网路由内），故诊断在能访问 EBS 的 Windows 机器上跑，结果经 GitHub 回传。
 
-这一步只做**诊断采集**，脚本是只读的——不输密码、不改系统、不动浏览器数据。
+## 运行（Git Bash / mingw64）
 
----
+GitHub Desktop → `Repository → Open in Git Bash`：
+```bash
+bash diagnose_ebs.sh
+```
+生成 `ebs_diag_result.txt`，commit + push 回传。
 
-## 怎么运行（Windows）
+`diagnose_ebs.ps1` 为 PowerShell 等价版（备用）。
 
-**前提：在那台平时能打开 EBS 的电脑上运行（要连着公司内网/VPN）。**
+## 脚本做什么（只读，不输密码/不改系统）
+- 内网/VPN 判定：`ipconfig` 抓 IPv4，看有无 10.x
+- DNS（nslookup）+ TCP 连通性（curl 退出码：7 拒绝 / 28 超时 / 6 解析失败）
+- 首页 `curl -I` 不跟随跳转 → 看是否 30x 跳 SSO
+- 探 `/OA_HTML/AppsLogin`、`AppsLocalLogin.jsp`、`RF.jsp` → 抓最终 URL / title / form 字段名，判定本地表单 vs SSO
+- 端口不通时 tracert；代理环境变量
 
-### 方法 A：右键运行（最简单）
-1. 下载本仓库（或单独下 `diagnose_ebs.ps1`）。
-2. 右键 `diagnose_ebs.ps1` → **使用 PowerShell 运行**。
-3. 等它跑完（几十秒），窗口里会有结果。
-4. 同目录会生成 **`ebs_diag_result.txt`**，把这个文件发回。
+## v1 的判定目的
+登录方式是脚本抓回的页面特征判定，不是假设：
+- **本地表单**（出现 usernameField/passwordField 等）→ v2 可写 curl 自动登录验证，用干净会话证明账号+服务端正常、问题在浏览器 session
+- **跳 SSO** → 自动登录基本不可行，方案转向浏览器侧清 session
 
-### 方法 B：如果方法 A 提示"无法加载/执行策略被禁止"
-1. 开始菜单搜 **PowerShell**，打开。
-2. `cd` 到脚本所在目录，例如：
-   ```powershell
-   cd $HOME\Downloads\temp
-   ```
-3. 运行：
-   ```powershell
-   powershell -ExecutionPolicy Bypass -File .\diagnose_ebs.ps1
-   ```
-4. 跑完后把同目录的 `ebs_diag_result.txt` 发回。
-
----
-
-## 它会查什么
-- 本机是否在公司内网/VPN（有没有 10.x 内网 IP）
-- 域名能不能解析、8000 端口通不通
-- EBS 登录页是**本地账号密码表单**还是**跳 SSO 单点登录**（决定下一步能不能脚本自动验证）
-- 链路追踪、系统代理设置
-
-> 第一版故意不自动输账号密码：登录方式还没确认，且对财务系统跑自动登录有账号锁定风险。等看清登录方式，第二版再做精确的登录验证。
+> 注意：对财务系统自动登录有账号锁定风险，故 v1 先只探测登录方式，确认后再决定 v2。

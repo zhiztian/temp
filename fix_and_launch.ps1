@@ -43,18 +43,26 @@ Start-Sleep -Seconds 3
 W "  msedge after close: $(@(Get-Process msedge -EA SilentlyContinue).Count)"
 Flush
 
-# 3. relaunch EBS in IE mode
+# 3. relaunch EBS NORMALLY (NO command-line flags!)
+#    Using any flag (e.g. --ie-mode-force) DISABLES IE mode for the whole
+#    Edge session until restart. Site list already routes EBS to IE mode,
+#    so we just open the URL normally and let policy do its job.
 W ""
-W "==== 3. relaunch in IE mode ===="
+W "==== 3. relaunch EBS normally (no flags) ===="
 $ok=$false
 try {
-    Start-Process $edge -ArgumentList @("--ie-mode-force", $Url)
-    Start-Sleep -Seconds 10
-    $iepA=@(Get-Process iexplore -EA SilentlyContinue)
+    Start-Process $edge -ArgumentList @($Url)
+    W "  launched: msedge `"$Url`"  (no flags - IE mode comes from site list policy)"
+    W "  waiting up to 25s for IE-mode tab to spawn iexplore..."
+    for($i=0; $i -lt 5; $i++){
+        Start-Sleep -Seconds 5
+        $iepA=@(Get-Process iexplore -EA SilentlyContinue)
+        if($iepA.Count -gt 0){ break }
+    }
     W "  iexplore after launch: $($iepA.Count)"
     foreach($p in $iepA){ W "    PID=$($p.Id)" }
-    if($iepA.Count -gt 0){ W "  >> SUCCESS: IE engine running, page is in IE mode."; $ok=$true }
-    else { W "  >> FAIL: no iexplore child = IE mode did not engage." }
+    if($iepA.Count -gt 0){ W "  >> SUCCESS: IE engine running, EBS is in IE mode."; $ok=$true }
+    else { W "  >> no iexplore yet - may need you to log in first (forms page triggers IE mode)." }
 } catch { W "  launch error: $($_.Exception.Message)" }
 Flush
 
@@ -73,9 +81,12 @@ if(-not $ok){
 # 5. self-check
 W ""
 W "==== SELF-CHECK ===="
-W "  [$(if($ok){'PASS'}else{'FAIL'})] EBS launched in IE mode"
-if($ok){ W "  >> If this keeps recurring on every restart, ask me to make this"
-         W "     auto-run at logon (a scheduled task that clears stale iexplore)." }
+W "  [$(if($ok){'PASS'}else{'FAIL'})] EBS opened, IE engine running"
+W "  NOTE: This script uses NO command-line flags (that was the bug before)."
+W "  The fix for the recurring error is just: kill stale iexplore, then open"
+W "  Edge normally. You can also do it by hand: close Edge, end any iexplore"
+W "  in Task Manager, reopen Edge, go to EBS."
+if($ok){ W "  >> If it recurs every restart, ask me to auto-clear iexplore at logon." }
 Flush
 Write-Host ""
 Write-Host "Log: $Out" -ForegroundColor Green

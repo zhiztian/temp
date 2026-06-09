@@ -106,23 +106,14 @@ foreach($ext in @("Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Expl
 }
 Flush
 
-# --- 5. leftover 360 dlls still referenced anywhere ---
+# --- 5. quick scan: 360 dll referenced (fast, via reg.exe query) ---
 W ""
-W "==== 5. any 360 dll still registered ===="
-$hits=0
-foreach($base in @("Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID",
-                   "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID")){
-    try{
-        Get-ChildItem $base -EA SilentlyContinue | Select-Object -First 5000 | ForEach-Object {
-            $ip=Join-Path $_.PSPath "InprocServer32"
-            if(Test-Path $ip){
-                $v=(Get-ItemProperty $ip -Name '(default)' -EA SilentlyContinue).'(default)'
-                if($v -match '360'){ W "  $($_.PSChildName) -> $v"; $hits++ }
-            }
-        }
-    }catch{}
-}
-if($hits -eq 0){ W "  no 360 dll referenced in CLSID InprocServer32" }
+W "==== 5. any 360 dll still registered (fast) ===="
+try{
+    $r = reg.exe query "HKLM\SOFTWARE\Classes\CLSID" /s /f "360" /d 2>$null | Select-Object -First 30
+    if($r){ $r | ForEach-Object { if($_ -match '360'){ W "  $_" } } }
+    else { W "  no 360 dll reference found (or query returned none)" }
+}catch{ W "  skipped: $_" }
 
 W ""
 W "==== READ ===="

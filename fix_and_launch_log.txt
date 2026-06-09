@@ -1,0 +1,28 @@
+﻿Fix + launch EBS in IE mode  2026-06-09 16:12:31
+Machine: DESKTOP-2BJ6P4J  User: admin
+URL: http://ebsprod.bytedance.net:8000
+Edge: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe (149.0.4022.52)
+
+==== 1. kill stale iexplore.exe ====
+  iexplore before: 0
+
+==== 2. close all Edge ====
+  msedge before: 7
+  msedge after close: 0
+
+==== 3. relaunch EBS normally (no flags) ====
+  launched: msedge "http://ebsprod.bytedance.net:8000"  (no flags - IE mode comes from site list policy)
+  waiting up to 25s for IE-mode tab to spawn iexplore...
+  iexplore after launch: 2
+    PID=19756
+    PID=21324
+  >> SUCCESS: IE engine running, EBS is in IE mode.
+
+==== SELF-CHECK ====
+  [PASS] EBS opened, IE engine running
+  NOTE: This script uses NO command-line flags (that was the bug before).
+  The fix for the recurring error is just: kill stale iexplore, then open
+  Edge normally. You can also do it by hand: close Edge, end any iexplore
+  in Task Manager, reopen Edge, go to EBS.
+  >> If it recurs every restart, ask me to auto-clear iexplore at logon.
+

@@ -1,0 +1,37 @@
+﻿Diagnose IE COM registration  2026-06-09 16:33:05
+Machine: DESKTOP-2BJ6P4J  User: admin
+(READ ONLY - this script changes nothing)
+
+==== 1. IE COM LocalServer32 values ====
+  [Registry::HKEY_CLASSES_ROOT\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"   <-- still points to 360 (HIJACK RESIDUE)
+  [Registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"   <-- still points to 360 (HIJACK RESIDUE)
+  [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"   <-- still points to 360 (HIJACK RESIDUE)
+  [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"   <-- still points to 360 (HIJACK RESIDUE)
+
+==== 2. ProgID InternetExplorer.Application ====
+  Registry::HKEY_CLASSES_ROOT\InternetExplorer.Application\CLSID = {0002DF01-0000-0000-C000-000000000046}
+  Registry::HKEY_CLASSES_ROOT\InternetExplorer.Application.1\CLSID = {0002DF01-0000-0000-C000-000000000046}
+
+==== 3. App Paths\iexplore.exe ====
+  Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\iexplore.exe = C:\Program Files\Internet Explorer\IEXPLORE.EXE  (ok)
+  Registry::HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\App Paths\iexplore.exe = C:\Program Files\Internet Explorer\IEXPLORE.EXE  (ok)
+
+==== 4. leftover 360 traces ====
+  EXISTS: C:\Users\admin\AppData\Roaming\360se6
+  gone: C:\Users\admin\AppData\Local\360se6
+  gone: C:\Users\admin\AppData\Roaming\360se
+  EXISTS: C:\Program Files (x86)\360
+
+==== 5. real iexplore.exe on disk ====
+  EXISTS: C:\Program Files\Internet Explorer\iexplore.exe
+  EXISTS: C:\Program Files (x86)\Internet Explorer\iexplore.exe
+
+==== VERDICT ====
+  hijack(360)=4  dangling(iexplore missing)=0  ok=0  missingKey=0
+  >> CONFIRMED: IE COM still points to 360 residue. THIS is the 0x8000FFFF cause.
+     Fix = restore LocalServer32 to real iexplore.exe (run fix_ie_com.ps1).
+

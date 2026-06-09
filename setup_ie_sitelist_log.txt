@@ -1,0 +1,45 @@
+﻿Setup IE-mode SiteList (ADMIN)  2026-06-09 16:04:16
+Machine: DESKTOP-2BJ6P4J  User: admin
+IE-mode sites : ebsprod.bytedance.net:8000, ebsprod.bytedance.net
+Neutral sites : sso.bytedance.com, login.bytedance.com
+
+==== 1. write SiteList XML (schema v.2) ====
+  written: C:\ProgramData\EdgeIEMode\sitelist.xml
+  --- content ---
+    <site-list version="205">
+      <site url="ebsprod.bytedance.net:8000" allow-redirect="true">
+        <compat-mode>IE7Enterprise</compat-mode>
+        <open-in>IE11</open-in>
+      </site>
+      <site url="ebsprod.bytedance.net" allow-redirect="true">
+        <compat-mode>IE7Enterprise</compat-mode>
+        <open-in>IE11</open-in>
+      </site>
+      <site url="sso.bytedance.com">
+        <open-in>None</open-in>
+      </site>
+      <site url="login.bytedance.com">
+        <open-in>None</open-in>
+      </site>
+    </site-list>
+
+==== 2. set Edge policies (HKLM) ====
+  InternetExplorerIntegrationLevel = 1
+  InternetExplorerIntegrationSiteList = file:///C:/ProgramData/EdgeIEMode/sitelist.xml
+
+==== SELF-CHECK ====
+  XML parsed OK: version=205, IE11 sites=2, neutral sites=2
+  [PASS] SiteList XML exists
+  [PASS] XML well-formed, schema>=2, has IE11 site(s)
+  [PASS] IntegrationLevel=1
+  [PASS] SiteList policy points to XML
+  >> PASS. Next (per Microsoft/Oracle standard rollout):
+     1. RESTART THE PC (not just Edge). MS docs: reboot, sometimes twice,
+        so the IE11 feature + policy fully register. This is the most
+        common reason 'reinstall Edge' error appears - reboot fixes it.
+     2. After reboot, open the EBS site in Edge - it auto-loads in IE mode
+        (IE 'e' icon on the tab). compat-mode is IE7Enterprise (EBS standard).
+     3. Verify live policy at: edge://policy (search IntegrationSiteList).
+     4. If still 'reinstall Edge': open edge://compat/iediagnostic, read
+        'IE mode API version'. Old (~10) => run Windows Update fully + reboot.
+

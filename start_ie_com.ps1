@@ -1,37 +1,85 @@
 # =====================================================================
-# 用 COM 对象 InternetExplorer.Application 拉起真正的 IE11 内核
-# 绕过 Win11 对 iexplore.exe 的 Edge 重定向。IE 内核才会调 Java 插件。
-#
-# 运行(Git Bash):  powershell -ExecutionPolicy Bypass -File ./start_ie_com.ps1
-# 或右键 用 PowerShell 运行
+# 启动 IE 内核 (Win11) —— 自动验证并写日志,无需人工看屏幕
+# 多种方式依次尝试,记录每种是否真正拉起了 IE 内核(MSHTML)。
+# 产出: ie_start_log.txt  (commit 回传即可)
 # =====================================================================
 
-$ErrorActionPreference = "Stop"
+$Out = Join-Path $PSScriptRoot "ie_start_log.txt"
+if (-not $PSScriptRoot) { $Out = "ie_start_log.txt" }
 $EBS = "http://ebsprod.bytedance.net:8000/OA_HTML/OA.jsp?OAFunc=OANEWHOMEPAGE"
+$log = New-Object System.Text.StringBuilder
+function W($m){ [void]$log.AppendLine($m); Write-Host $m }
 
-Write-Host "尝试用 COM 启动 IE 内核 ..." -ForegroundColor Cyan
+W "IE 内核启动诊断  $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+W "目标: $EBS"
+
+# --- 方式 1: COM InternetExplorer.Application ---
+W ""
+W "==== 方式1: COM InternetExplorer.Application ===="
+$ieProcBefore = @(Get-Process iexplore -ErrorAction SilentlyContinue).Count
 try {
     $ie = New-Object -ComObject InternetExplorer.Application
     $ie.Visible = $true
     $ie.Navigate($EBS)
-    Write-Host ">> 成功创建 IE COM 对象。" -ForegroundColor Green
-    Write-Host "   如果弹出了带经典菜单的 IE 窗口并加载 EBS = 可用。" -ForegroundColor Green
-    Write-Host ""
-    Write-Host "接下来在这个 IE 窗口里:" -ForegroundColor Yellow
-    Write-Host "  1. 齿轮/工具 -> Internet 选项 -> 常规 -> 删除 ->"
-    Write-Host "     勾 [Cookie 和网站数据] -> 删除   (清 session)"
-    Write-Host "  2. 重新访问 EBS 登录 -> 进 Main Menu -> 点开财务表单"
-    Write-Host "  3. Java 表单应能起来(EBS 已在 Java 安全例外)"
-    Write-Host ""
-    Write-Host "窗口已交给你,本脚本不关闭它。"
+    Start-Sleep -Seconds 6
+    W "COM 创建: 成功"
+    try { W "  Visible    : $($ie.Visible)" } catch { W "  Visible 读取失败: $_" }
+    try { W "  LocationURL: $($ie.LocationURL)" } catch { W "  LocationURL 读取失败: $_" }
+    try { W "  Busy       : $($ie.Busy)" } catch {}
+    try { W "  HWND       : $($ie.HWND)" } catch {}
+    # 判定是否真加载了 EBS
+    Start-Sleep -Seconds 4
+    try {
+        $url = $ie.LocationURL
+        if ($url -match "ebsprod|bytedance") {
+            W "  >> 判定: IE 内核已启动并导航到 EBS (URL=$url)"
+        } elseif ($url) {
+            W "  >> IE 起来了但 URL=$url (可能被拦/跳转)"
+        } else {
+            W "  >> COM 对象在但无 URL,可能未真正渲染"
+        }
+    } catch { W "  二次读取 URL 失败: $_" }
 }
 catch {
-    Write-Host ">> COM 方式失败:" -ForegroundColor Red
-    Write-Host $_.Exception.Message
-    Write-Host ""
-    Write-Host "若报 80004005/拒绝访问 等,说明 IE COM 也被策略禁用,"
-    Write-Host "本地启动 IE 内核的路基本走完,只剩找 IT 开 Edge IE 模式。"
+    W "COM 失败: $($_.Exception.Message)"
+    W "  HResult: $($_.Exception.HResult)"
+}
+$ieProcAfter = @(Get-Process iexplore -ErrorAction SilentlyContinue)
+W "iexplore 进程数 (前->后): $ieProcBefore -> $($ieProcAfter.Count)"
+foreach($p in $ieProcAfter){ W "  iexplore PID=$($p.Id) 路径=$($p.Path)" }
+
+# --- 方式 2: 直接跑 iexplore.exe (看是否被重定向) ---
+W ""
+W "==== 方式2: 直接 iexplore.exe ===="
+$iePath = "C:\Program Files\Internet Explorer\iexplore.exe"
+if (Test-Path $iePath) {
+    $before2 = @(Get-Process iexplore -ErrorAction SilentlyContinue).Count
+    $beforeEdge = @(Get-Process msedge -ErrorAction SilentlyContinue).Count
+    Start-Process $iePath $EBS
+    Start-Sleep -Seconds 5
+    $after2 = @(Get-Process iexplore -ErrorAction SilentlyContinue).Count
+    $afterEdge = @(Get-Process msedge -ErrorAction SilentlyContinue).Count
+    W "iexplore 进程 (前->后): $before2 -> $after2"
+    W "msedge   进程 (前->后): $beforeEdge -> $afterEdge"
+    if ($after2 -gt $before2) { W "  >> iexplore 进程增加 = IE 可能真起来了" }
+    elseif ($afterEdge -gt $beforeEdge) { W "  >> 是 Edge 进程增加 = 被重定向到 Edge(IE 未起)" }
+    else { W "  >> 无新进程 = 启动失败/秒退" }
+} else {
+    W "iexplore.exe 不存在: $iePath"
 }
 
+# --- 环境补充 ---
+W ""
+W "==== 环境 ===="
+W "FEATURE_BROWSER_EMULATION 注册表(IE 兼容模式设置):"
+$femu = "HKCU:\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION"
+if (Test-Path $femu) { (Get-Item $femu).Property | ForEach-Object { W "  $_ = $((Get-ItemProperty $femu).$_)" } } else { W "  (无此键)" }
+
+W ""
+W "==== 判定 ===="
+W "方式1 LocationURL 含 ebsprod 或 方式2 iexplore 进程增加 -> IE 内核可用,接下去清cookie+登录"
+W "两者都失败/全被重定向到 msedge -> 本地起 IE 内核的路走完,只剩 IT 开 Edge IE 模式"
+
+$log.ToString() | Out-File -FilePath $Out -Encoding UTF8
 Write-Host ""
-Read-Host "按回车退出"
+Write-Host "日志已写: $Out  (commit 回传)" -ForegroundColor Green

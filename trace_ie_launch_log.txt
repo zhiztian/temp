@@ -1,102 +1,96 @@
-﻿TRACE IE launch blocker (ADMIN)  2026-06-09 17:01:34
+﻿TRACE IE launch blocker (ADMIN)  2026-06-09 17:05:47
 Machine: DESKTOP-2BJ6P4J  User: admin
 
 ==== 1. enable process auditing ====
-  prev Process Creation audit: 用法: AuditPol command [<sub-command><options>]
+  prev audit (create): 系统审核策略
 
+类别/子类别                                    设置
+详细追踪
+  进程创建                                    成功和失败
+  set create: 命令成功执行。
 
+.Trim()
+  set term  : 命令成功执行。
 
-
-
-命令 (每次执行仅允许一个命令)
-
-  /?               帮助(与上下文相关)
-
-  /get             显示当前审核策略。
-
-  /set             设置审核策略。
-
-  /list            显示可选择的策略元素。
-
-  /backup          将审核策略保存到文件。
-
-  /restore         将审核策略从文件还原。
-
-  /clear           清除审核策略。
-
-  /remove          删除用户账户的每用户审核策略。
-
-  /resourceSACL    配置全局资源 SACL
-
-
-
-
-
-有关每个命令的详细信息，请使用 AuditPol <command> /?
-
-auditpol : 发生错误 0x00000057:
-所在位置 C:\Users\admin\Documents\.src\github.com\temp\trace_ie_launch.ps1:28 字符: 15
-+ ... revAudit = (auditpol /get /subcategory:"Process Creation" 2>&1 | Out- ...
-+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (发生错误 0x00000057::String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-
-参数错误。
+.Trim()
   process auditing + cmdline capture enabled
 
 ==== 2. trigger: create IE COM object ====
   >> COM FAILED: 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
 
-==== 3. process create/terminate events (iexplore) since trigger ====
-  [17:01:36] Id=4688
-     new   : 
-     parent: 
-  [17:01:36] Id=4688
-     new   : 
-     parent: 
-  [17:01:37] Id=4688
-     new   : 
-     parent: 
-  [17:01:37] Id=4688
-     new   : 
-     parent: 
-  [17:01:37] Id=4689
-     new   : 
-     parent: 
-  [17:01:37] Id=4688
-     new   : 
-     parent: 
-  [17:01:37] Id=4689
-     new   : 
-     parent: 
-  [17:01:37] Id=4689
-     new   : 
-     parent: 
-  [17:01:37] Id=4688
-     new   : 
-     parent: 
-  [17:01:37] Id=4688
-     new   : 
-     parent: 
-  [17:01:40] Id=4688
-     new   : 
-     parent: 
-  [17:01:42] Id=4688
-     new   : 
-     parent: 
-  [17:01:42] Id=4689
-     new   : 
-     parent: 
-  [17:01:42] Id=4688
-     new   : 
-     parent: 
-  [17:01:42] Id=4688
-     new   : 
-     parent: 
-  [17:01:42] Id=4688
-     new   : 
-     parent: 
+==== 3. process create/terminate events (iexplore/edge) since trigger ====
+  [17:05:48] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=utility --utility-sub-type=compatibility_weboc.mojom.CompatibilityService --lang=zh-CN --service-sandbox-type=none --video-capture-use-gpu-memory-buffer --ssd-no-pressure-read-main-dll --metrics-shmem-handle=5104,i,8905568052878021950,15053844481780606829,524288 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190708997556373682 --mojo-platform-channel-handle=1856 /prefetch:14
+  [17:05:48] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=utility --utility-sub-type=PooledProcess2 --lang=zh-CN --service-sandbox-type=utility --video-capture-use-gpu-memory-buffer --skip-read-main-dll --metrics-shmem-handle=6736,i,16294425530016726022,5463874200812255754,524288 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190708999430457380 --mojo-platform-channel-handle=7164 /prefetch:14
+  [17:05:48] 4689 EXIT
+     proc  : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe   status: 0x0
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files\Internet Explorer\iexplore.exe
+     parent: C:\Windows\System32\svchost.exe
+     cmd   : "C:\Program Files\Internet Explorer\iexplore.exe" -Embedding
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files (x86)\Internet Explorer\iexplore.exe
+     parent: C:\Program Files\Internet Explorer\iexplore.exe
+     cmd   : "C:\Program Files (x86)\Internet Explorer\IEXPLORE.EXE" SCODEF:22728 CREDAT:17410 /prefetch:2
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files\Internet Explorer\iexplore.exe
+     parent: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+     cmd   : "C:\Program Files\Internet Explorer\iexplore.exe" about:blank 
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=utility --utility-sub-type=PooledProcess2 --lang=zh-CN --service-sandbox-type=utility --video-capture-use-gpu-memory-buffer --skip-read-main-dll --metrics-shmem-handle=7124,i,15618506296200564235,13218799150752956230,524288 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190709001304541078 --mojo-platform-channel-handle=7212 /prefetch:14
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files\Internet Explorer\iexplore.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -- "about:blank"
+  [17:05:50] 4689 EXIT
+     proc  : C:\Program Files\Internet Explorer\iexplore.exe   status: 0x1
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --edge-skip-compat-layer-relaunch -- about:blank
+  [17:05:50] 4689 EXIT
+     proc  : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe   status: 0x0
+  [17:05:50] 4689 EXIT
+     proc  : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe   status: 0x0
+  [17:05:50] 4689 EXIT
+     proc  : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe   status: 0x0
+  [17:05:50] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=renderer --pdf-upsell-enabled --video-capture-use-gpu-memory-buffer --lang=zh-CN --js-flags --device-scale-factor=2 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=17 --time-ticks-at-unix-epoch=-1780994578874398 --launch-time-ticks=1372091588 --skip-read-main-dll --metrics-shmem-handle=7408,i,2828637057092356384,4257789426258727503,2097152 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190709002241582927 --mojo-platform-channel-handle=7416 /prefetch:1
+  [17:05:51] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=renderer --extension-process --renderer-sub-type=extension --pdf-upsell-enabled --video-capture-use-gpu-memory-buffer --lang=zh-CN --js-flags --device-scale-factor=2 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=18 --time-ticks-at-unix-epoch=-1780994578874398 --launch-time-ticks=1372178419 --skip-read-main-dll --metrics-shmem-handle=7816,i,9376096159453945930,12848596307318449307,2097152 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190709003178624776 --mojo-platform-channel-handle=7812 /prefetch:9
+  [17:05:53] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=utility --utility-sub-type=PooledProcess2 --lang=zh-CN --service-sandbox-type=utility --video-capture-use-gpu-memory-buffer --skip-read-main-dll --metrics-shmem-handle=8044,i,5276919061282521890,1745019566779648136,524288 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190709005052708474 --mojo-platform-channel-handle=7796 /prefetch:14
+  [17:05:53] 4688 CREATE
+     new   : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --type=renderer --pdf-upsell-enabled --video-capture-use-gpu-memory-buffer --lang=zh-CN --js-flags --device-scale-factor=2 --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=21 --time-ticks-at-unix-epoch=-1780994578874398 --launch-time-ticks=1374643266 --skip-read-main-dll --metrics-shmem-handle=8196,i,8064612874585536390,11657391206006719256,2097152 --field-trial-handle=2928,i,15231268958729483911,13287057705966207157,262144 --variations-seed-version --pseudonymization-salt-handle=3036,i,11993680229864601898,12836773470919537313,4 --trace-process-track-uuid=3190709005989750323 --mojo-platform-channel-handle=8200 /prefetch:1
+  [17:05:53] 4689 EXIT
+     proc  : C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe   status: 0x0
+  [17:05:53] 4688 CREATE
+     new   : C:\Program Files\Internet Explorer\iexplore.exe
+     parent: C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+     cmd   : "C:\Program Files\Internet Explorer\iexplore.exe" -dualengineadapter="C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\dual_engine_adapter_x64.dll" -dualenginepipe=6796 APPID:MSEdge.UserData.Profile1
+  [17:05:54] 4688 CREATE
+     new   : C:\Program Files\Internet Explorer\iexplore.exe
+     parent: C:\Program Files\Internet Explorer\iexplore.exe
+     cmd   : "C:\Program Files\Internet Explorer\iexplore.exe" -dualengineadapter="C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\dual_engine_adapter_x64.dll" -dualenginepipe=6796 APPID:MSEdge.UserData.Profile1
+  [17:05:54] 4688 CREATE
+     new   : C:\Windows\System32\WerFault.exe
+     parent: C:\Program Files\Internet Explorer\iexplore.exe
+     cmd   : C:\WINDOWS\system32\WerFault.exe -u -p 1328 -s 2296
 
 ==== 4. block sources (AppLocker / WDAC / Defender) since trigger ====
   [AppLocker] no iexplore-related blocks

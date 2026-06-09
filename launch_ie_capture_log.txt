@@ -1,0 +1,38 @@
+﻿Launch IE + capture logs  2026-06-09 16:52:52
+Machine: DESKTOP-2BJ6P4J  User: admin
+
+==== 1. attempt: New-Object InternetExplorer.Application ====
+  >> COM FAILED: 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+     HResult: 0x80080005
+     (0x80080005=CO_E_SERVER_EXEC_FAILURE: server exe failed to launch;
+      0x80040154=REGDB_E_CLASSNOTREG: class not registered)
+
+==== 2. attempt: start iexplore.exe about:blank ====
+  launched iexplore.exe
+  iexplore proc: 2 -> 2
+  msedge   proc: 9 -> 11
+  >> redirected to Edge (no standalone IE)
+
+==== 3. recent Application event log (last 3 min, IE/Edge related) ====
+
+==== 4. recent System event log (last 3 min, relevant) ====
+
+==== 5. DCOM errors (10010/10016/10001) last 10 min ====
+  [16:45:26] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 DESKTOP-2BJ6P4J\admin SID (S-1-5-21-1950754565-1675087318-3740386163-1001)授予针对 CLSID 为  {2593F8B9-4EAF-457C-B68A-50F6B8EA6B54}
+  [16:45:23] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 NT AUTHORITY\SYSTEM SID (S-1-5-18)授予针对 CLSID 为  Windows.SecurityCenter.WscDataProtection
+  [16:45:23] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 NT AUTHORITY\SYSTEM SID (S-1-5-18)授予针对 CLSID 为  Windows.SecurityCenter.SecurityAppBroker
+  [16:45:23] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 NT AUTHORITY\SYSTEM SID (S-1-5-18)授予针对 CLSID 为  Windows.SecurityCenter.WscBrokerManager
+  [16:44:46] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 DESKTOP-2BJ6P4J\admin SID (S-1-5-21-1950754565-1675087318-3740386163-1001)授予针对 CLSID 为  {2593F8B9-4EAF-457C-B68A-50F6B8EA6B54}
+  [16:43:21] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 NT AUTHORITY\LOCAL SERVICE SID (S-1-5-19)授予针对 CLSID 为  {00000000-0000-0000-0000-000000000000}
+  [16:43:21] Id=10016: 应用程序-特定 权限设置并未向在应用程序容器 不可用 SID (不可用)中运行的地址 LocalHost (使用 LRPC) 中的用户 NT AUTHORITY\LOCAL SERVICE SID (S-1-5-19)授予针对 CLSID 为  {00000000-0000-0000-0000-000000000000}
+
+==== 6. IE COM LocalServer32 now ====
+  Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+     = "C:\Program Files\Internet Explorer\iexplore.exe"
+  Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+     = "C:\Program Files\Internet Explorer\iexplore.exe"
+
+==== NOTE: also export Edge's own diagnostic ====
+  In Edge open edge://compat/iediagnostic -> click the Export button
+  -> save the XML, commit it too (richest detail on why IE mode fails).
+

@@ -1,0 +1,27 @@
+<iediagnosticdata>
+  <launchiemode>失败（无法创建 Internet Explorer 进程。错误代码： 0x8000FFFF）</launchiemode>
+  <iemodeversion data-ie-mode-version="13 (预测值)">
+    <edgeversion>149.0.4022.52 (正式版本)   (64 位)</edgeversion>
+    <dualengineadapterversion>149.0.4022.52 (dual_engine_adapter_x64.dll)</dualengineadapterversion>
+    <osversion>Windows 11 Version 25H2 (Build 26200.8524)  (64 位)</osversion>
+  </iemodeversion>
+  <enableieinwindowsfeatures>开</enableieinwindowsfeatures>
+  <iemodeset data-ie-mode-set="关">
+    <iemodeflag>默认值</iemodeflag>
+    <iemodegrouppolicy>Internet Explorer 模式</iemodegrouppolicy>
+    <demomode>关</demomode>
+    <iemodeintegrationlevel>Internet Explorer 模式</iemodeintegrationlevel>
+  </iemodeset>
+  <commandline>"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --flag-switches-begin --flag-switches-end</commandline>
+  <grouppolicyset data-group-policy-set="开">
+    <sitelistie>未设置</sitelistie>
+    <sitelistedge>file:///C:/ProgramData/EdgeIEMode/sitelist.xml</sitelistedge>
+    <sitelistdebug>未设置</sitelistdebug>
+    <cloudsitelist>未设置</cloudsitelist>
+    <cloudsitelistdebug>未设置</cloudsitelistdebug>
+    <sendintranettoie>未配置</sendintranettoie>
+  </grouppolicyset>
+  <effectivesitelistsource data-effective-site-list-source="配置企业模式站点列表(Microsoft Edge 策略)">
+    <effectivesitelisturl>file:///C:/ProgramData/EdgeIEMode/sitelist.xml</effectivesitelisturl>
+  </effectivesitelistsource>
+</iediagnosticdata>

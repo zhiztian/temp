@@ -42,42 +42,37 @@ $keys=@(
   "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\$CLSID\LocalServer32",
   "Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"
 )
-# 启用接管所有权所需特权(改 TrustedInstaller 保护键)
-$privSig=@"
-using System;using System.Runtime.InteropServices;
-public class Priv{
- [DllImport("advapi32.dll",SetLastError=true)] static extern bool OpenProcessToken(IntPtr h,int a,out IntPtr t);
- [DllImport("advapi32.dll",SetLastError=true)] static extern bool LookupPrivilegeValue(string s,string n,out long l);
- [DllImport("advapi32.dll",SetLastError=true)] static extern bool AdjustTokenPrivileges(IntPtr t,bool d,ref TP np,int l,IntPtr p,IntPtr r);
- [DllImport("kernel32.dll")] static extern IntPtr GetCurrentProcess();
- [StructLayout(LayoutKind.Sequential,Pack=1)] struct TP{public int C;public long L;public int A;}
- public static bool En(string p){IntPtr t;if(!OpenProcessToken(GetCurrentProcess(),0x28,out t))return false;TP tp;tp.C=1;tp.A=2;if(!LookupPrivilegeValue(null,p,out tp.L))return false;return AdjustTokenPrivileges(t,false,ref tp,0,IntPtr.Zero,IntPtr.Zero);}
-}
-"@
-try{ Add-Type -TypeDefinition $privSig -EA Stop; foreach($pv in @("SeTakeOwnershipPrivilege","SeRestorePrivilege")){ [void][Priv]::En($pv) } }catch{}
-
+# 用 reg.exe 改默认值;被拒则 takeown+icacls 接管所有权后再改(全用系统自带命令,避免内联C#)
+# reg.exe 用的注册表路径(不带 Registry:: 前缀)
+$regPaths=@(
+  "HKCR\CLSID\$CLSID\LocalServer32",
+  "HKCR\WOW6432Node\CLSID\$CLSID\LocalServer32",
+  "HKLM\SOFTWARE\Classes\CLSID\$CLSID\LocalServer32",
+  "HKLM\SOFTWARE\Classes\WOW6432Node\CLSID\$CLSID\LocalServer32"
+)
 $fixed=0
-$adminSid=New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid,$null)
-foreach($k in $keys){
+foreach($rp in $regPaths){
     try{
-        # 普通方式先试
-        if(-not(Test-Path $k)){ New-Item -Path $k -Force | Out-Null }
-        try{ Set-Item -Path $k -Value $iexplore -EA Stop }
-        catch{
-            # 被拒 -> 接管所有权(针对 TrustedInstaller 保护的 WOW6432Node 键)
-            $sub = $k -replace 'Registry::HKEY_LOCAL_MACHINE\\','' -replace 'Registry::HKEY_CLASSES_ROOT\\','SOFTWARE\Classes\'
+        # 先直接写
+        $r = reg.exe add "$rp" /ve /d $iexplore /f 2>&1
+        if($LASTEXITCODE -ne 0){
+            # 被拒 -> 接管所有权再写。reg.exe 的 HKCR\WOW6432Node 对应 HKLM\SOFTWARE\Classes\WOW6432Node
+            $real = $rp -replace '^HKCR\\','HKLM\SOFTWARE\Classes\'
+            # 用 .NET 接管所有权(均为单行调用,无内联C#,避免换行符问题)
+            $sub = $real -replace '^HKLM\\',''
             $rk=[Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine,[Microsoft.Win32.RegistryView]::Registry64)
+            $adminSid=New-Object System.Security.Principal.SecurityIdentifier([System.Security.Principal.WellKnownSidType]::BuiltinAdministratorsSid,$null)
             $ko=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::TakeOwnership)
             $acl=$ko.GetAccessControl([System.Security.AccessControl.AccessControlSections]::None); $acl.SetOwner($adminSid); $ko.SetAccessControl($acl); $ko.Close()
             $k2=$rk.OpenSubKey($sub,[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
             $a2=$k2.GetAccessControl(); $rule=New-Object System.Security.AccessControl.RegistryAccessRule($adminSid,[System.Security.AccessControl.RegistryRights]::FullControl,"None","None","Allow"); $a2.AddAccessRule($rule); $k2.SetAccessControl($a2); $k2.Close()
             $k3=$rk.OpenSubKey($sub,$true); $k3.SetValue("",$iexplore,[Microsoft.Win32.RegistryValueKind]::String); $k3.Close(); $rk.Close()
         }
-        $v=(Get-ItemProperty -Path $k -Name '(default)' -EA SilentlyContinue).'(default)'
-        $shortK = $k -replace 'Registry::',''
-        if($v -match 'iexplore'){ $fixed++; W "  [OK] $shortK" }
-        else { W "  [失败] $shortK 当前值=$v" }
-    }catch{ W "  [异常] $($k -replace 'Registry::','') -> $($_.Exception.Message)" }
+        # 回读验证
+        $chk = reg.exe query "$rp" /ve 2>&1 | Out-String
+        if($chk -match 'iexplore'){ $fixed++; W "  [OK] $rp" }
+        else { W "  [失败] $rp 回读=$($chk.Trim())" }
+    }catch{ W "  [异常] $rp -> $($_.Exception.Message)" }
 }
 W "  4个键修复: $fixed/4  $(OK ($fixed -eq 4))"
 Flush

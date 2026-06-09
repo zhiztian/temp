@@ -1,0 +1,34 @@
+﻿Downgrade Edge -> 148.0.3967.109  2026-06-09 19:40:26
+Machine: DESKTOP-2BJ6P4J  User: admin
+================================================
+Current Edge: 149.0.4022.52  ->  target: 148.0.3967.109
+
+[STEP 1] Download official enterprise MSI
+  downloaded: C:\Users\admin\AppData\Local\Temp\MicrosoftEdgeEnterpriseX64_148.msi (190 MB)
+  SHA256 match: [OK]
+
+[STEP 2] Lock Edge updates (pin to 148, block auto-update)
+  UpdateDefault=0, TargetVersionPrefixStable=148.  [OK]
+  firewall block updater: [OK]
+
+[STEP 3] Install 148.0.3967.109 (downgrade)
+  msiexec exit code: 1603  [FAIL]
+
+[STEP 4] Verify
+  Edge version now: 149.0.4022.52  [FAIL]
+
+================================================
+Summary:
+  download+verify : [OK]
+  install 148     : [FAIL]
+  version is 148  : [FAIL]
+  updates locked  : pinned to 148.x + updater blocked
+
+  !! version not 148. Check msiexec exit code above. May need manual install of:
+     C:\Users\admin\AppData\Local\Temp\MicrosoftEdgeEnterpriseX64_148.msi
+
+  To later re-allow updates (go back to newest Edge):
+    reg delete HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate /v UpdateDefault /f
+    reg delete HKLM\SOFTWARE\Policies\Microsoft\EdgeUpdate /v TargetVersionPrefixStable /f
+    netsh advfirewall firewall delete rule name="Block Edge Update"
+

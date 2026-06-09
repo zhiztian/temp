@@ -1,0 +1,20 @@
+﻿Analyze iexplore crash dump (ADMIN)  2026-06-09 17:30:16
+Machine: DESKTOP-2BJ6P4J
+
+==== 1. enable WER LocalDumps for iexplore (full dump) ====
+  LocalDumps enabled -> C:\Users\admin\AppData\Local\CrashDumps
+
+==== 2. trigger IE COM (to generate dump) ====
+  COM failed (expected): 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+
+==== 3. locate crash dumps ====
+  no iexplore dump found yet (WER may have uploaded+purged; LocalDumps will catch the NEXT crash)
+
+==== 4. find debugger (cdb.exe) ====
+  cdb NOT installed (Windows SDK Debugging Tools needed)
+
+==== 5. crash call stack ====
+  >> No debugger. To get the stack, install Windows SDK 'Debugging Tools for Windows':
+     winget install Microsoft.WinDbg     (or install via Windows SDK)
+     then re-run this script.
+

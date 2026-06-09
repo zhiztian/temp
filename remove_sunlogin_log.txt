@@ -1,0 +1,26 @@
+﻿Remove Sunlogin autostart  2026-06-09 20:03:37
+Mode: STOP + DISABLE autostart (reversible)
+================================================
+
+[1] Running Sunlogin processes
+  none running
+
+[2] Sunlogin services
+  none
+
+[3] Sunlogin scheduled tasks
+  none
+
+[4] Run-key autostart entries
+  found: [HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run] SunloginClient = "C:\Program Files\Oray\SunLogin\SunloginClient\SunloginClient.exe" --cmd=autorun
+    -> removed
+
+================================================
+Done. Re-scan after:
+  sunlogin processes now: 0
+
+  Autostart disabled. To FULLY remove, run with -Uninstall:
+    powershell -ExecutionPolicy Bypass -File .\remove_sunlogin.ps1 -Uninstall
+  (If it's a remote-control tool you still need sometimes, keep it installed;
+   this script already stopped it from auto-starting at boot.)
+

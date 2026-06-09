@@ -1,0 +1,23 @@
+﻿Verify Edge IE-mode  2026-06-09 15:39:17
+Machine: DESKTOP-2BJ6P4J  User: admin
+
+==== 1. Edge IE-mode policy (HKLM) ====
+  InternetExplorerIntegrationLevel = 1
+
+==== 2. IE-mode FoD ====
+  query failed (may need admin to query): 请求的操作需要提升。
+
+
+==== 3. does Edge actually see the policy ====
+  HKLM:\SOFTWARE\Policies\Microsoft\Edge InternetExplorerIntegrationLevel = 1
+
+==== 4. Edge state ====
+  Edge ver: 149.0.4022.52
+  msedge processes running: 6
+  (if >0, Edge must be fully closed once for fresh policy load - or just rely on this restart)
+
+==== SELF-CHECK ====
+  [FAIL] IE-mode FoD installed
+  [PASS] IE-mode policy = 1
+  >> NOT READY. See which line FAILED above.
+

@@ -1,4 +1,4 @@
-﻿EBS IE Mode setup  2026-06-09 18:44:29
+﻿EBS IE Mode setup  2026-06-09 18:53:12
 Machine: DESKTOP-2BJ6P4J  User: admin
 ================================================
 
@@ -15,13 +15,24 @@ Machine: DESKTOP-2BJ6P4J  User: admin
   task 'ClearStaleIExplore': [OK] (rc=0)
 
 [STEP 4] Clear current stale iexplore
-  current iexplore count: 2, clearing...
+  current iexplore count: 0, clearing...
 
 [STEP 5] Live test: create IE COM object
   [FAIL] IE COM create failed: 0x80080005
          检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
   -- recent iexplore crash (WER 1000/1001) --
-    latest dump: C:\IEDumps\iexplore.exe.11792.dmp (1755 KB)
+    | P1: iexplore.exe
+    | P4: dual_engine_adapter_x64.dll
+    | P7: c0000005
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_iexplore.exe_79f3bc28b44cb55b318545fd72aef2698e37ddb_c955c3f6_e8c6098c-1fdf-4715-ac1a-4b71957695dd
+    ----
+    | 出错应用程序名称： iexplore.exe，版本： 11.0.26100.8115，时间戳： 0x57235415
+    | 出错模块名称： dual_engine_adapter_x64.dll， 版本： 149.0.4022.52，时间戳： 0x6a209587
+    | 异常代码： 0xc0000005
+    | Faulting 应用程序路径： C:\Program Files\Internet Explorer\iexplore.exe
+    | Faulting 模块路径： C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\dual_engine_adapter_x64.dll
+    ----
+    latest dump: C:\IEDumps\iexplore.exe.16584.dmp (1754 KB)
 
 ================================================
 Setup done. Summary:

@@ -53,45 +53,58 @@ W "  SHA256 match: $(OK $hashOk)"
 if(-not $hashOk){ W "  HASH MISMATCH! aborting (got $h)"; Flush; Read-Host "Enter"; return }
 Flush
 
-# --- 2. lock updates BEFORE install (so it can't jump back to 149) ---
+# --- 2. install 148 FIRST (downgrade). Locking updates before install can
+#        block the MSI downgrade, so we install first, lock after. ---
 W ""
-W "[STEP 2] Lock Edge updates (pin to 148, block auto-update)"
-$euk="HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate"
-try{
-    if(-not(Test-Path $euk)){ New-Item -Path $euk -Force | Out-Null }
-    # pin to 148 line + allow only manual (so security patches within 148 still possible if you choose)
-    New-ItemProperty -Path $euk -Name "UpdateDefault" -Value 0 -PropertyType DWord -Force | Out-Null
-    New-ItemProperty -Path $euk -Name "TargetVersionPrefixStable" -Value "148." -PropertyType String -Force | Out-Null
-    # also block by the stable channel GUID
-    New-ItemProperty -Path $euk -Name "Update{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Value 0 -PropertyType DWord -Force | Out-Null
-    W "  UpdateDefault=0, TargetVersionPrefixStable=148.  [OK]"
-}catch{ W "  policy set failed: $($_.Exception.Message)" }
-# firewall block the updater
-try{
-    netsh advfirewall firewall delete rule name="Block Edge Update" 2>$null | Out-Null
-    netsh advfirewall firewall add rule name="Block Edge Update" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" 2>&1 | Out-Null
-    W "  firewall block updater: [OK]"
-}catch{ W "  firewall rule failed: $_" }
-Flush
-
-# --- 3. install 148 (downgrade needs ALLOWDOWNGRADE) ---
-W ""
-W "[STEP 3] Install $VER (downgrade)"
-# close edge first
+W "[STEP 2] Install $VER (downgrade)"
 Get-Process msedge -EA SilentlyContinue | Stop-Process -Force -EA SilentlyContinue
 Start-Sleep -Seconds 2
-$args = "/i `"$msi`" /qn /norestart ALLOWDOWNGRADE=1 DONOTCREATEDESKTOPSHORTCUT=TRUE"
+$miLog = Join-Path $env:TEMP "edge148_install.log"
+# minimal args (matches what worked in testing): only /i /qn /norestart ALLOWDOWNGRADE=1
+$args = "/i `"$msi`" /qn /norestart ALLOWDOWNGRADE=1 /l*v `"$miLog`""
 $p = Start-Process msiexec.exe -ArgumentList $args -Wait -PassThru
-W "  msiexec exit code: $($p.ExitCode)  $(OK ($p.ExitCode -eq 0 -or $p.ExitCode -eq 3010))"
+$installOk = ($p.ExitCode -eq 0 -or $p.ExitCode -eq 3010)
+W "  msiexec exit code: $($p.ExitCode)  $(OK $installOk)"
+if(-not $installOk){
+    # extract real reason from MSI log
+    W "  -- MSI log key lines --"
+    try{
+        $lines = Get-Content $miLog -ErrorAction SilentlyContinue
+        $hit = @($lines | Where-Object { $_ -match 'downgrade|newer version|Return value 3|error status|Disallow|1708|1709|EdgeUpdate|cannot|denied' } | Select-Object -Last 10)
+        foreach($l in $hit){ W "    | $($l.Trim())" }
+    }catch{ W "    (log read failed)" }
+}
 Flush
 
-# --- 4. verify version ---
+# --- 3. verify version ---
 W ""
-W "[STEP 4] Verify"
+W "[STEP 3] Verify version"
 Start-Sleep -Seconds 3
 $new = (Get-ItemProperty "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -EA SilentlyContinue).VersionInfo.ProductVersion
 $verOk = ($new -like "148.*")
 W "  Edge version now: $new  $(OK $verOk)"
+Flush
+
+# --- 4. lock updates AFTER successful downgrade (so it won't jump back) ---
+W ""
+W "[STEP 4] Lock Edge updates (only if downgrade succeeded)"
+if($verOk){
+    $euk="HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate"
+    try{
+        if(-not(Test-Path $euk)){ New-Item -Path $euk -Force | Out-Null }
+        New-ItemProperty -Path $euk -Name "UpdateDefault" -Value 0 -PropertyType DWord -Force | Out-Null
+        New-ItemProperty -Path $euk -Name "TargetVersionPrefixStable" -Value "148." -PropertyType String -Force | Out-Null
+        New-ItemProperty -Path $euk -Name "Update{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Value 0 -PropertyType DWord -Force | Out-Null
+        W "  UpdateDefault=0, TargetVersionPrefixStable=148.  [OK]"
+    }catch{ W "  policy set failed: $($_.Exception.Message)" }
+    try{
+        netsh advfirewall firewall delete rule name="Block Edge Update" 2>$null | Out-Null
+        netsh advfirewall firewall add rule name="Block Edge Update" dir=out action=block program="C:\Program Files (x86)\Microsoft\EdgeUpdate\MicrosoftEdgeUpdate.exe" 2>&1 | Out-Null
+        W "  firewall block updater: [OK]"
+    }catch{ W "  firewall rule failed: $_" }
+}else{
+    W "  skipped (downgrade did not succeed; not locking updates)"
+}
 Flush
 
 # --- summary ---
@@ -99,9 +112,9 @@ W ""
 W "================================================"
 W "Summary:"
 W "  download+verify : $(OK $hashOk)"
-W "  install 148     : $(OK ($p.ExitCode -eq 0 -or $p.ExitCode -eq 3010))"
+W "  install 148     : $(OK $installOk)"
 W "  version is 148  : $(OK $verOk)"
-W "  updates locked  : pinned to 148.x + updater blocked"
+W "  updates locked  : $(if($verOk){'pinned to 148.x + updater blocked'}else{'skipped'})"
 if($verOk){
     W ""
     W "  NEXT: reboot, then run open_ebs.ps1 and test the finance form."

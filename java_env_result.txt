@@ -1,0 +1,57 @@
+EBS Java/Forms 客户端环境检查
+时间: 2026-06-09 14:35:54
+机器: DESKTOP-2BJ6P4J  用户: admin
+OS:   MINGW64_NT-10.0-26200 3.6.7-fb42d713.x86_64
+
+==================== 1. Java 安装目录 ====================
+[/c/Program Files (x86)/Java] 下:
+    jre1.8.0_333
+
+==================== 2. java / javaws 可执行文件 ====================
+PATH 中 java: /c/Program Files (x86)/Common Files/Oracle/Java/javapath/java
+    java version "1.8.0_333"
+    Java(TM) SE Runtime Environment (build 1.8.0_333-b26)
+    Java HotSpot(TM) Client VM (build 25.333-b26, mixed mode)
+
+  发现: /c/Program Files (x86)/Java/jre1.8.0_333/bin/java.exe
+      java version "1.8.0_333"
+      Java(TM) SE Runtime Environment (build 1.8.0_333-b26)
+      Java HotSpot(TM) Client VM (build 25.333-b26, mixed mode)
+      javaws 存在(支持 Web Start): /c/Program Files (x86)/Java/jre1.8.0_333/bin/javaws.exe
+
+==================== 3. Java Web Start (.jnlp) 关联 ====================
+.jnlp 关联类: matches
+--- 该类的 open 命令 ---
+(若 .jnlp 的 open 命令指向 javaws.exe,则财务表单可走 Web Start,不依赖浏览器插件)
+
+==================== 4. Internet Explorer 内核 ====================
+-rwxr-xr-x 2 admin 197121 846280 Apr  1 13:46 /c/Program Files/Internet Explorer/iexplore.exe
+IE 主程序存在
+
+==================== 5. Microsoft Edge ====================
+Edge: /c/Program Files (x86)/Microsoft/Edge/Application/msedge.exe
+
+==================== 6. Edge IE 模式 策略 ====================
+--- InternetExplorerIntegrationLevel (是否允许 IE 模式) ---
+
+
+
+--- 企业站点列表 SiteList (IT 是否预置了 EBS 走 IE 模式) ---
+
+
+
+==================== 7. Java 部署配置 (deployment.properties) ====================
+存在: /c/Users/admin/AppData/LocalLow/Sun/Java/Deployment/deployment.properties
+    deployment.version=8
+
+==================== 8. Java 站点例外列表 (Exception Site List) ====================
+存在: /c/Users/admin/AppData/LocalLow/Sun/Java/Deployment/security/exception.sites
+    http://ebsprod.bytedance.net:8000
+    http://ebsprod.bytedance.net:8000/OA_HTML/OA.jsp?OAFunc=OANEWHOMEPAGE#dummyAnchor1
+
+==================== 判定提示 ====================
+把 java_env_result.txt 贴回 / commit。我会据此判断:
+  A) 没装 Java -> 先装 JRE 8
+  B) 装了 Java + 有 javaws + .jnlp 已关联 -> 走 Web Start,最省事
+  C) 装了 Java 但只能插件模式 -> 配 Edge IE 模式
+  D) IT 已预置 SiteList -> EBS 本应自动 IE 模式,排查为何没生效

@@ -52,7 +52,7 @@ try {
     # IE-mode sites: compat-mode IE11 + open-in IE11, allow server-side redirects
     foreach($s in $IE_SITES){
         [void]$sb.AppendLine("  <site url=`"$s`" allow-redirect=`"true`">")
-        [void]$sb.AppendLine('    <compat-mode>IE11</compat-mode>')
+        [void]$sb.AppendLine('    <compat-mode>IE7Enterprise</compat-mode>')
         [void]$sb.AppendLine('    <open-in>IE11</open-in>')
         [void]$sb.AppendLine('  </site>')
     }
@@ -115,12 +115,15 @@ W "  [$(if($xmlValid){'PASS'}else{'FAIL'})] XML well-formed, schema>=2, has IE11
 W "  [$(if($polLevelOk){'PASS'}else{'FAIL'})] IntegrationLevel=1"
 W "  [$(if($polListOk){'PASS'}else{'FAIL'})] SiteList policy points to XML"
 if ($xmlOk -and $xmlValid -and $polLevelOk -and $polListOk) {
-    W "  >> PASS. Next:"
-    W "     1. Fully close Edge (all windows) or restart PC so policy reloads."
-    W "     2. Open Edge, go to:  edge://compat/enterprise  -> click 'Force update'"
-    W "        (or just restart). Then open the site - it auto-loads in IE mode,"
-    W "        IE 'e' icon appears on the tab automatically, no manual menu needed."
+    W "  >> PASS. Next (per Microsoft/Oracle standard rollout):"
+    W "     1. RESTART THE PC (not just Edge). MS docs: reboot, sometimes twice,"
+    W "        so the IE11 feature + policy fully register. This is the most"
+    W "        common reason 'reinstall Edge' error appears - reboot fixes it."
+    W "     2. After reboot, open the EBS site in Edge - it auto-loads in IE mode"
+    W "        (IE 'e' icon on the tab). compat-mode is IE7Enterprise (EBS standard)."
     W "     3. Verify live policy at: edge://policy (search IntegrationSiteList)."
+    W "     4. If still 'reinstall Edge': open edge://compat/iediagnostic, read"
+    W "        'IE mode API version'. Old (~10) => run Windows Update fully + reboot."
 } else {
     W "  >> Some step FAILED, see above."
 }

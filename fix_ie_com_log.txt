@@ -1,0 +1,46 @@
+﻿Fix IE COM registration (ADMIN)  2026-06-09 16:34:51
+Machine: DESKTOP-2BJ6P4J  User: admin
+
+==== target iexplore.exe ====
+  will set LocalServer32 -> "C:\Program Files\Internet Explorer\iexplore.exe"
+
+==== 1. current LocalServer32 values (before) ====
+  [Registry::HKEY_CLASSES_ROOT\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"  <-- HIJACKED by 360
+  [Registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"  <-- HIJACKED by 360
+  [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"  <-- HIJACKED by 360
+  [Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32]
+     = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"  <-- HIJACKED by 360
+
+==== 2. backup before changing ====
+  backed up: HKEY_CLASSES_ROOT\CLSID\{0002DF01-0000-0000-C000-000000000046}
+  backed up: HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}
+  backup file: C:\Users\admin\Documents\.src\github.com\temp\ie_com_backup_20260609_163451.reg
+
+==== 3. repair (set LocalServer32 -> iexplore.exe) ====
+  set: Registry::HKEY_CLASSES_ROOT\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+  set: Registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+  set: Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+  set via reg.exe: Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 -> reg.exe : 错误: 拒绝访问。
+所在位置 C:\Users\admin\Documents\.src\github.com\temp\fix_ie_com.ps1:102 字符: 14
++         $r = reg.exe add "$regPath" /ve /d $desired /f 2>&1
++              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (错误: 拒绝访问。:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+.Trim()
+
+==== 4. verify (after) ====
+  [PASS] Registry::HKEY_CLASSES_ROOT\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Program Files\Internet Explorer\iexplore.exe"
+  [PASS] Registry::HKEY_CLASSES_ROOT\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Program Files\Internet Explorer\iexplore.exe"
+  [PASS] Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Program Files\Internet Explorer\iexplore.exe"
+  [FAIL] Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32 = "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+
+==== SELF-CHECK ====
+  [FAIL] all LocalServer32 point to iexplore.exe
+  [FAIL] no remaining 360 reference
+  >> Some step FAILED. Backup is at: C:\Users\admin\Documents\.src\github.com\temp\ie_com_backup_20260609_163451.reg (double-click to restore if needed).
+

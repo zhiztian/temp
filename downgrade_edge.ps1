@@ -37,19 +37,39 @@ $cur = (Get-ItemProperty "C:\Program Files (x86)\Microsoft\Edge\Application\msed
 W "Current Edge: $cur  ->  target: $VER"
 W ""
 
-# --- 1. download official MSI ---
-W "[STEP 1] Download official enterprise MSI"
-try{
-    $ProgressPreference='SilentlyContinue'
-    Invoke-WebRequest -Uri $URL -OutFile $msi -UseBasicParsing -EA Stop
-    $sz=[int]((Get-Item $msi).Length/1MB)
-    W "  downloaded: $msi ($sz MB)"
-}catch{ W "  download failed: $($_.Exception.Message)"; Flush; Read-Host "Enter"; return }
+# --- 0. clear any old update lock (a previous run may have set UpdateDefault=0
+#        which would block the MSI downgrade) ---
+W "[STEP 0] Clear any existing update lock (so downgrade is not blocked)"
+$euk0="HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate"
+if(Test-Path $euk0){
+    foreach($vn in @("UpdateDefault","TargetVersionPrefixStable","Update{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}")){
+        try{ Remove-ItemProperty -Path $euk0 -Name $vn -ErrorAction SilentlyContinue }catch{}
+    }
+    W "  cleared prior update-lock values"
+}else{ W "  no prior lock present" }
+netsh advfirewall firewall delete rule name="Block Edge Update" 2>$null | Out-Null
+Flush
 
-# verify SHA256
-$h=(Get-FileHash $msi -Algorithm SHA256).Hash
-$hashOk = ($h -eq $SHA)
-W "  SHA256 match: $(OK $hashOk)"
+# --- 1. get official MSI (reuse local file if present and hash matches) ---
+W ""
+W "[STEP 1] Get official enterprise MSI (reuse if already downloaded)"
+$hashOk=$false
+if(Test-Path $msi){
+    $h=(Get-FileHash $msi -Algorithm SHA256).Hash
+    if($h -eq $SHA){ $hashOk=$true; W "  local MSI found and SHA256 matches -> skip download ($([int]((Get-Item $msi).Length/1MB)) MB)" }
+    else { W "  local MSI hash mismatch -> re-downloading"; Remove-Item $msi -Force -EA SilentlyContinue }
+}
+if(-not $hashOk){
+    try{
+        $ProgressPreference='SilentlyContinue'
+        Invoke-WebRequest -Uri $URL -OutFile $msi -UseBasicParsing -EA Stop
+        $sz=[int]((Get-Item $msi).Length/1MB)
+        W "  downloaded: $msi ($sz MB)"
+        $h=(Get-FileHash $msi -Algorithm SHA256).Hash
+        $hashOk = ($h -eq $SHA)
+        W "  SHA256 match: $(OK $hashOk)"
+    }catch{ W "  download failed: $($_.Exception.Message)"; Flush; Read-Host "Enter"; return }
+}
 if(-not $hashOk){ W "  HASH MISMATCH! aborting (got $h)"; Flush; Read-Host "Enter"; return }
 Flush
 

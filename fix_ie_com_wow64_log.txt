@@ -1,0 +1,20 @@
+﻿Fix stubborn WOW6432Node IE COM key (ADMIN)  2026-06-09 16:37:14
+Machine: DESKTOP-2BJ6P4J  User: admin
+
+==== before ====
+HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+    (默认)    REG_SZ    "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+
+==== take ownership + grant + set + restore ====
+  ownership/set failed: 使用“3”个参数调用“OpenSubKey”时发生异常:“不允许所请求的注册表访问权。”
+
+==== after ====
+HKEY_LOCAL_MACHINE\SOFTWARE\Classes\WOW6432Node\CLSID\{0002DF01-0000-0000-C000-000000000046}\LocalServer32
+    (默认)    REG_SZ    "C:\Users\admin\AppData\Roaming\360se6\Application\360se.exe"
+
+==== SELF-CHECK ====
+  [FAIL] WOW6432Node LocalServer32 -> iexplore.exe (no 360)
+  >> still failed. Last resort: use regedit.exe GUI - right-click the key ->
+     Permissions -> Advanced -> change Owner to Administrators -> grant Full
+     Control -> edit (Default) to the iexplore.exe path.
+

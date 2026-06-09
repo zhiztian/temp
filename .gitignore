@@ -1,2 +1,4 @@
 .cookies.*
 *.cookies
+*.jnlp
+ws_*.tmp

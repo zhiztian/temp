@@ -59,18 +59,19 @@ done
 
 # --- 3. .jnlp 关联(Web Start 是否可双击运行) ---
 SEC "3. Java Web Start (.jnlp) 关联"
-if command -v cmd.exe >/dev/null 2>&1; then
-    assoc=$(cmd.exe /c "assoc .jnlp" 2>/dev/null | tr -d '\r')
-    W "assoc .jnlp : ${assoc:-(无关联)}"
-    if [ -n "$assoc" ]; then
-        ftype=$(printf '%s' "$assoc" | sed 's/.*=//')
-        ft=$(cmd.exe /c "ftype $ftype" 2>/dev/null | tr -d '\r')
-        W "ftype       : ${ft:-(无)}"
+REG=reg.exe; command -v reg >/dev/null 2>&1 && REG=reg
+if command -v "$REG" >/dev/null 2>&1; then
+    # 用注册表查 .jnlp 关联,避免调 cmd.exe 卡住
+    cls=$(timeout 10 "$REG" query "HKCR\.jnlp" //ve 2>/dev/null | tr -d '\r' | grep -i 'REG_SZ' | awk '{print $NF}')
+    W ".jnlp 关联类: ${cls:-(无关联或查询超时)}"
+    if [ -n "$cls" ]; then
+        W "--- 该类的 open 命令 ---"
+        timeout 10 "$REG" query "HKCR\\${cls}\\shell\\open\\command" //ve 2>/dev/null | tr -d '\r' | sed 's/^/    /' | tee -a "$OUT" || W "    (查询失败)"
     fi
 else
-    W "cmd.exe 不可用,跳过"
+    W "reg 不可用,跳过"
 fi
-W "(若 .jnlp 已关联 javaws,则财务表单可走 Web Start,不依赖浏览器插件)"
+W "(若 .jnlp 的 open 命令指向 javaws.exe,则财务表单可走 Web Start,不依赖浏览器插件)"
 
 # --- 4. IE 内核 ---
 SEC "4. Internet Explorer 内核"
@@ -88,12 +89,12 @@ SEC "6. Edge IE 模式 策略"
 if command -v reg >/dev/null 2>&1 || command -v reg.exe >/dev/null 2>&1; then
     REG=reg.exe; command -v reg >/dev/null 2>&1 && REG=reg
     W "--- InternetExplorerIntegrationLevel (是否允许 IE 模式) ---"
-    $REG query "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel 2>/dev/null | tee -a "$OUT" || W "  HKLM 无此策略"
-    $REG query "HKCU\SOFTWARE\Policies\Microsoft\Edge" /v InternetExplorerIntegrationLevel 2>/dev/null | tee -a "$OUT" || W "  HKCU 无此策略"
+    timeout 10 $REG query "HKLM\SOFTWARE\Policies\Microsoft\Edge" //v InternetExplorerIntegrationLevel 2>/dev/null | tee -a "$OUT" || W "  HKLM 无此策略"
+    timeout 10 $REG query "HKCU\SOFTWARE\Policies\Microsoft\Edge" //v InternetExplorerIntegrationLevel 2>/dev/null | tee -a "$OUT" || W "  HKCU 无此策略"
     W ""
     W "--- 企业站点列表 SiteList (IT 是否预置了 EBS 走 IE 模式) ---"
-    $REG query "HKLM\SOFTWARE\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList 2>/dev/null | tee -a "$OUT" || W "  HKLM 无 SiteList"
-    $REG query "HKCU\SOFTWARE\Policies\Microsoft\Edge" /v InternetExplorerIntegrationSiteList 2>/dev/null | tee -a "$OUT" || W "  HKCU 无 SiteList"
+    timeout 10 $REG query "HKLM\SOFTWARE\Policies\Microsoft\Edge" //v InternetExplorerIntegrationSiteList 2>/dev/null | tee -a "$OUT" || W "  HKLM 无 SiteList"
+    timeout 10 $REG query "HKCU\SOFTWARE\Policies\Microsoft\Edge" //v InternetExplorerIntegrationSiteList 2>/dev/null | tee -a "$OUT" || W "  HKCU 无 SiteList"
 else
     W "reg 命令不可用,跳过注册表检查"
 fi

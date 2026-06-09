@@ -19,12 +19,18 @@ W ""
 W "==== 1. attempt: New-Object InternetExplorer.Application ===="
 try {
     $ie = New-Object -ComObject InternetExplorer.Application -EA Stop
-    W "  >> COM SUCCESS. IE object created."
-    try { W "  LocationName: $($ie.Name)" } catch {}
-    try { $ie.Quit() } catch {}
+    W "  >> COM SUCCESS. IE object created (this means LocalServer32 is now correct)."
+    try { W "  FullName: $($ie.FullName)" } catch {}
+    try { $ie.Quit(); [System.Runtime.InteropServices.Marshal]::ReleaseComObject($ie) | Out-Null } catch {}
 } catch {
-    W "  >> COM FAILED: $($_.Exception.Message)"
-    W "     HResult: 0x$('{0:X8}' -f ($_.Exception.HResult -band 0xFFFFFFFF))"
+    $ex = $_.Exception
+    W "  >> COM FAILED: $($ex.Message)"
+    # COM HRESULT may sit on the inner exception
+    $hr = $ex.HResult
+    if ($ex.InnerException -and $ex.InnerException.HResult) { $hr = $ex.InnerException.HResult }
+    W "     HResult: 0x$('{0:X8}' -f ($hr -band 0xFFFFFFFF))"
+    W "     (0x80080005=CO_E_SERVER_EXEC_FAILURE: server exe failed to launch;"
+    W "      0x80040154=REGDB_E_CLASSNOTREG: class not registered)"
 }
 Flush
 
@@ -32,12 +38,20 @@ Flush
 W ""
 W "==== 2. attempt: start iexplore.exe about:blank ===="
 $ie_exe="C:\Program Files\Internet Explorer\iexplore.exe"
-$b_ie=@(Get-Process iexplore -EA SilentlyContinue).Count
-$b_ed=@(Get-Process msedge -EA SilentlyContinue).Count
+$beforeIePids = @(Get-Process iexplore -EA SilentlyContinue | Select-Object -ExpandProperty Id)
+$b_ie = $beforeIePids.Count
+$b_ed = @(Get-Process msedge -EA SilentlyContinue).Count
 try { Start-Process $ie_exe "about:blank"; W "  launched iexplore.exe" } catch { W "  start error: $_" }
 Start-Sleep -Seconds 5
-W "  iexplore proc: $b_ie -> $(@(Get-Process iexplore -EA SilentlyContinue).Count)"
-W "  msedge   proc: $b_ed -> $(@(Get-Process msedge -EA SilentlyContinue).Count)"
+$ie_after = @(Get-Process iexplore -EA SilentlyContinue)
+$ed_after = @(Get-Process msedge -EA SilentlyContinue)
+W "  iexplore proc: $b_ie -> $($ie_after.Count)"
+W "  msedge   proc: $b_ed -> $($ed_after.Count)"
+if($ie_after.Count -gt $b_ie){ W "  >> real IE started" }
+elseif($ed_after.Count -gt $b_ed){ W "  >> redirected to Edge (no standalone IE)" }
+else { W "  >> nothing new / exited immediately" }
+# cleanup: close ONLY the iexplore we just spawned (PID not in the before-list)
+foreach($p in $ie_after){ if($beforeIePids -notcontains $p.Id){ try{ Stop-Process -Id $p.Id -Force -EA SilentlyContinue }catch{} } }
 Flush
 
 # 3. capture Windows Event Log entries around now (IE / Edge / AppModel / sidebyside)

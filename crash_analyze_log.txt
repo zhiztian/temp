@@ -1,0 +1,140 @@
+﻿iexplore crash analysis (ADMIN)  2026-06-09 17:19:12
+Machine: DESKTOP-2BJ6P4J
+
+==== 0. trigger IE COM (to produce a fresh crash) ====
+  COM failed (expected): 检索 COM 类工厂中 CLSID 为 {0002DF01-0000-0000-C000-000000000046} 的组件失败，原因是出现以下错误: 80080005 服务器运行失败 (异常来自 HRESULT:0x80080005 (CO_E_SERVER_EXEC_FAILURE))。
+
+==== 1. Application Error (Event 1000) iexplore ====
+  [17:05:54]
+    Faulting app   : iexplore.exe  11.0.26100.8115
+    FAULTING MODULE: dual_engine_adapter_x64.dll  149.0.4022.52
+    Exception code : c0000005
+    Fault offset   : 
+
+==== 2. Windows Error Reporting (Event 1001) iexplore ====
+  [17:05:59]
+    | 故障存储段 2078069646908923004，类型 4
+    | 事件名称: APPCRASH
+    | 响应: 不可用
+    | Cab ID: 0
+    | 问题签名:
+    | P1: iexplore.exe
+    | P2: 11.0.26100.8115
+    | P3: 57235415
+    | P4: dual_engine_adapter_x64.dll
+    | P5: 149.0.4022.52
+    | P6: 6a209587
+    | P7: c0000005
+    | P8: 00000000001f204f
+    | P9:
+    | P10:
+    | 附加文件:
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.6ab5f0bf-862b-4539-bba0-ec0f3eba7e38.tmp.mdmp
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.2c4154d4-2c14-4e3c-bd37-9353107ac7f6.tmp.WERInternalMetadata.xml
+    | WPR_initiated_DiagTrackMiniLogger_OneTrace_User_Logger_20260424_1_EC_0_inject.etl
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.0382d8ca-2879-4508-afd0-db8b8162564a.tmp.etl
+    | WPR_initiated_DiagTrackMiniLogger_WPR System Collector_inject.etl
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.cbf02679-5263-418b-92a3-46426fd27f3b.tmp.etl
+    | \\?\C:\ProgramData\Microsoft\Windows\WER\Temp\WER.60e8f626-0edf-4c49-920d-01f226733f5a.tmp.csv
+    ----
+
+==== 3. WER report files on disk (iexplore) ====
+  dir: C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_iexplore.exe_79f3bc28b44cb55b318545fd72aef2698e37ddb_c955c3f6_c4380070-1a06-4ae1-8f52-a7ec6632b496
+      EventType=APPCRASH
+      NsAppName=iexplore.exe
+      Sig[0].Name=应用程序名
+      Sig[0].Value=iexplore.exe
+      Sig[1].Name=应用程序版本
+      Sig[1].Value=11.0.26100.8115
+      Sig[2].Name=应用程序时间戳
+      Sig[2].Value=57235415
+      Sig[3].Name=故障模块名称
+      Sig[3].Value=dual_engine_adapter_x64.dll
+      Sig[4].Name=故障模块版本
+      Sig[4].Value=149.0.4022.52
+      Sig[5].Name=故障模块时间戳
+      Sig[5].Value=6a209587
+      Sig[6].Name=异常代码
+      Sig[6].Value=c0000005
+      Sig[7].Name=异常偏移
+      Sig[7].Value=00000000001f204f
+      DynamicSig[1].Name=OS 版本
+      DynamicSig[1].Value=10.0.26200.2.0.0.256.48
+  dir: C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_iexplore.exe_79f3bc28b44cb55b318545fd72aef2698e37ddb_c955c3f6_445babee-f8c1-4318-81f5-ec5b35627112
+      EventType=APPCRASH
+      NsAppName=iexplore.exe
+      Sig[0].Name=应用程序名
+      Sig[0].Value=iexplore.exe
+      Sig[1].Name=应用程序版本
+      Sig[1].Value=11.0.26100.8115
+      Sig[2].Name=应用程序时间戳
+      Sig[2].Value=57235415
+      Sig[3].Name=故障模块名称
+      Sig[3].Value=dual_engine_adapter_x64.dll
+      Sig[4].Name=故障模块版本
+      Sig[4].Value=149.0.4022.52
+      Sig[5].Name=故障模块时间戳
+      Sig[5].Value=6a209587
+      Sig[6].Name=异常代码
+      Sig[6].Value=c0000005
+      Sig[7].Name=异常偏移
+      Sig[7].Value=00000000001f204f
+      DynamicSig[1].Name=OS 版本
+      DynamicSig[1].Value=10.0.26200.2.0.0.256.48
+  dir: C:\ProgramData\Microsoft\Windows\WER\ReportArchive\AppCrash_iexplore.exe_79f3bc28b44cb55b318545fd72aef2698e37ddb_c955c3f6_f4feec78-8021-4f38-91a2-b3222e359177
+      EventType=APPCRASH
+      NsAppName=iexplore.exe
+      Sig[0].Name=应用程序名
+      Sig[0].Value=iexplore.exe
+      Sig[1].Name=应用程序版本
+      Sig[1].Value=11.0.26100.8115
+      Sig[2].Name=应用程序时间戳
+      Sig[2].Value=57235415
+      Sig[3].Name=故障模块名称
+      Sig[3].Value=dual_engine_adapter_x64.dll
+      Sig[4].Name=故障模块版本
+      Sig[4].Value=149.0.4022.52
+      Sig[5].Name=故障模块时间戳
+      Sig[5].Value=6a209587
+      Sig[6].Name=异常代码
+      Sig[6].Value=c0000005
+      Sig[7].Name=异常偏移
+      Sig[7].Value=00000000001f204f
+      DynamicSig[1].Name=OS 版本
+      DynamicSig[1].Value=10.0.26200.2.0.0.256.48
+
+==== 4. IE add-ons / BHO registry (possible crash cause) ====
+  BHO {1FD49718-1D00-4B19-AF5F-070AF6D5D54C} : IEToEdge BHO
+      dll: C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\BHO\ie_to_edge_bho_64.dll
+  BHO {31D09BA0-12F5-4CCE-BE8A-2923E76605DA} : Skype for Business Browser Helper
+      dll: C:\Program Files (x86)\Microsoft Office\root\VFS\ProgramFilesX64\Microsoft Office\Office16\OCHelper.dll
+  BHO {1FD49718-1D00-4B19-AF5F-070AF6D5D54C} : IEToEdge BHO
+      dll: C:\Program Files (x86)\Microsoft\Edge\Application\149.0.4022.52\BHO\ie_to_edge_bho_64.dll
+  BHO {31D09BA0-12F5-4CCE-BE8A-2923E76605DA} : Skype for Business Browser Helper
+      dll: C:\Program Files (x86)\Microsoft Office\root\VFS\ProgramFilesX64\Microsoft Office\Office16\OCHelper.dll
+  BHO {761497BB-D6F0-462C-B6EB-D4DAF1D92D43} : 
+      dll: 
+  BHO {DBC80044-A445-435b-BC74-9C25C1C588A9} : 
+      dll: 
+  IE-ext: {31D09BA0-12F5-4CCE-BE8A-2923E76605DA}
+
+==== 5. any 360 dll still registered (fast) ====
+  HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{31337EC7-5767-11CF-BEAB-00AA006C3606}
+      AppID    REG_SZ    {31337EC7-5767-11CF-BEAB-00AA006C3606}
+  HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{57360832-5F9B-4190-8467-000D2D510212}
+      AppID    REG_SZ    {57360832-5F9B-4190-8467-000D2D510212}
+      CLSID    REG_SZ    {bf78a650-d489-4360-a0b7-c32471e07692}
+  HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{6f33340d-8a01-473a-b75f-ded88c8360ce}
+      AppID    REG_SZ    {6f33340d-8a01-473a-b75f-ded88c8360ce}
+      AppID    REG_SZ    {AD829705-CCA8-44D4-88E0-331E48336059}
+      AppID    REG_SZ    {57360832-5F9B-4190-8467-000D2D510212}
+      AppID    REG_SZ    {57360832-5F9B-4190-8467-000D2D510212}
+      AppID    REG_SZ    {57360832-5F9B-4190-8467-000D2D510212}
+      CLSID    REG_SZ    {bf78a650-d489-4360-a0b7-c32471e07692}
+      AppID    REG_SZ    {57360832-5F9B-4190-8467-000D2D510212}
+
+==== READ ====
+  KEY = the FAULTING MODULE in sections 1/2/3. That DLL is what crashes
+  iexplore. If it's a 360 dll or some add-on -> remove/unregister it.
+  If it's a windows system dll -> likely needs sfc/DISM repair or update.
+

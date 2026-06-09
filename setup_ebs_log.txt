@@ -1,4 +1,4 @@
-﻿EBS IE Mode setup  2026-06-09 18:42:30
+﻿EBS IE Mode setup  2026-06-09 18:44:29
 Machine: DESKTOP-2BJ6P4J  User: admin
 ================================================
 
@@ -11,16 +11,11 @@ Machine: DESKTOP-2BJ6P4J  User: admin
   IE mode policy=1: [OK] ; site list written: [OK]
 
 [STEP 3] Install logon auto-clean task (for Edge149 exit-crash residue)
-  task 'ClearStaleIExplore': [FAIL] (rc=-2147467259)
-    schtasks output: schtasks : 错误: '/TR' 选项的值不能超过 261 字符。
-所在位置 C:\Users\admin\Documents\.src\github.com\temp\setup_ebs.ps1:117 字符: 14
-+ ... createOut = schtasks /Create /TN $taskName /TR $action /SC ONLOGON /R ...
-+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (错误: '/TR' 选项的值不能超过 261 字符。:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
+  cleaner script: C:\ProgramData\ClearStaleIExplore.ps1
+  task 'ClearStaleIExplore': [OK] (rc=0)
 
 [STEP 4] Clear current stale iexplore
-  current iexplore count: 4, clearing...
+  current iexplore count: 2, clearing...
 
 [STEP 5] Live test: create IE COM object
   [FAIL] IE COM create failed: 0x80080005
@@ -32,7 +27,7 @@ Machine: DESKTOP-2BJ6P4J  User: admin
 Setup done. Summary:
   STEP1 registry  : [OK]
   STEP2 IE policy : [OK]
-  STEP3 autoclean : [FAIL]
+  STEP3 autoclean : [OK]
   STEP5 IE test   : [FAIL]
 
   !! Live test not passed. NOTE: IE mode policy needs a REBOOT to fully apply.

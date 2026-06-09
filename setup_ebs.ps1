@@ -74,8 +74,10 @@ foreach($k in $keys){
             $k3=$rk.OpenSubKey($sub,$true); $k3.SetValue("",$iexplore,[Microsoft.Win32.RegistryValueKind]::String); $k3.Close(); $rk.Close()
         }
         $v=(Get-ItemProperty -Path $k -Name '(default)' -EA SilentlyContinue).'(default)'
-        if($v -match 'iexplore'){ $fixed++ }
-    }catch{ W "  键处理异常: $($_.Exception.Message)" }
+        $shortK = $k -replace 'Registry::',''
+        if($v -match 'iexplore'){ $fixed++; W "  [OK] $shortK" }
+        else { W "  [失败] $shortK 当前值=$v" }
+    }catch{ W "  [异常] $($k -replace 'Registry::','') -> $($_.Exception.Message)" }
 }
 W "  4个键修复: $fixed/4  $(OK ($fixed -eq 4))"
 Flush
@@ -129,6 +131,41 @@ $ie=@(Get-Process iexplore -EA SilentlyContinue)
 W "  当前 iexplore 数: $($ie.Count),清理中..."
 $ie | ForEach-Object { try{ Stop-Process -Id $_.Id -Force }catch{} }
 
+# ============ 步骤5: 实测验证(真的能不能创建 IE) ============
+W ""
+W "【步骤5】实测:尝试创建 IE COM 对象(验证是否真能用)"
+$comOk=$false; $comErr=""
+try{
+    $ieTest=New-Object -ComObject InternetExplorer.Application -EA Stop
+    $comOk=$true
+    W "  [OK] IE COM 创建成功 —— IE 模式底层可用!"
+    try{ $ieTest.Quit(); [System.Runtime.InteropServices.Marshal]::ReleaseComObject($ieTest)|Out-Null }catch{}
+}catch{
+    $comErr=$_.Exception.Message
+    $hr=$_.Exception.HResult; if($_.Exception.InnerException){ $hr=$_.Exception.InnerException.HResult }
+    W "  [失败] IE COM 创建失败: 0x$('{0:X8}' -f ($hr -band 0xFFFFFFFF))"
+    W "         $comErr"
+}
+Start-Sleep -Seconds 5
+# 如果失败,抓最近一次 iexplore 崩溃信息
+if(-not $comOk){
+    W "  -- 最近 iexplore 崩溃 (WER 1001) --"
+    try{
+        Get-WinEvent -FilterHashtable @{LogName='Application'; Id=1000,1001; StartTime=(Get-Date).AddMinutes(-3)} -EA SilentlyContinue |
+            Where-Object{ $_.Message -match 'iexplore' } | Select-Object -First 2 | ForEach-Object {
+                ($_.Message -split "`n") | Where-Object{ $_ -match 'iexplore|dual_engine|mshtml|c0000005|P4|故障模块|异常代码' } |
+                    Select-Object -First 6 | ForEach-Object { W "    | $($_.Trim())" }
+                W "    ----"
+            }
+    }catch{ W "    (读取崩溃日志失败: $_)" }
+    # 检查崩溃 dump
+    if(Test-Path "C:\IEDumps"){
+        $d=@(Get-ChildItem "C:\IEDumps" -Filter *.dmp -EA SilentlyContinue | Sort-Object LastWriteTime -Descending)
+        if($d.Count){ W "    最新崩溃dump: $($d[0].FullName) ($([int]($d[0].Length/1KB))KB)" }
+    }
+}
+Flush
+
 # ============ 总结 ============
 W ""
 W "================================================"
@@ -136,6 +173,12 @@ W "配置完成。总结:"
 W "  步骤1 修注册表 : $(OK ($fixed -eq 4))"
 W "  步骤2 IE模式策略: $(OK ($lv -eq 1))"
 W "  步骤3 自动清理  : $(OK $taskOk)"
+W "  步骤5 IE实测    : $(OK $comOk)"
+if(-not $comOk){
+    W ""
+    W "  !! 实测未通过。注意:此脚本刚运行,IE模式策略需【重启电脑】后才完全生效。"
+    W "     请重启后用 open_ebs.ps1 打开 EBS 测试;若仍失败,把 setup_ebs_log.txt 发回。"
+}
 W ""
 W "【日常使用】以后打开 EBS,运行:"
 W "    powershell -ExecutionPolicy Bypass -File .\open_ebs.ps1"
